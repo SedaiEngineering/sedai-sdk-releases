@@ -1,6 +1,6 @@
 ## Getting started
 
-Create a virtuaal environment and activate it:
+Create a virtual environment and activate it:
 
     python3 -m venv venv
     . ./venv/bin/activate
