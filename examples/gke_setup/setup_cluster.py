@@ -19,9 +19,7 @@ kubernetes_account = account.create_account(
     name=account_name,
     cloud_provider='KUBERNETES',
     integration_type='AGENT_BASED',
-    credentials=credentials.FederatedPrometheusJWT(
-        bearer_token='bearer_token'
-    ),
+    credentials=credentials.SedaiCredentials(),
     cluster_provider='GCP'
 )
 
