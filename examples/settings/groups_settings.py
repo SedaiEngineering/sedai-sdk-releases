@@ -2,7 +2,7 @@ from sedai.settings import get_group_settings, update_group_settings
 from sedai.settings import Settings
 
 
-group_id = '8100a6fd-cc22-4282-a0e2-7c7f06ea114b'
+group_id = '9f9300f6-7192-41ea-87e2-7dac93344aea'
 
 
 # Get the default settings for the group
