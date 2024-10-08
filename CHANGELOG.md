@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.5 - 2024-10-07
+
+### Added
+
+- [Retrieve recommended configuration by resource](https://sedaiengineering.github.io/sedai-sdk-python/sedai/optimizations.html#get_recommended_resource_state)
+
 ## 1.2.4 - 2024-09-24
 
 ### Added
