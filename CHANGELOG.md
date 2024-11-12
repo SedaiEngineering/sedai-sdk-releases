@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0 - 2024-11-12
+
+### Added
+
+- [Pagination Support](https://sedaiengineering.github.io/sedai-sdk-python/sedai/pagination.html)
+- [Retrieve Sedai Recommendations](https://sedaiengineering.github.io/sedai-sdk-python/sedai/optimizations.html#get_recommendations)
+- [Operation Compatibility Details](https://sedaiengineering.github.io/sedai-sdk-python/sedai/operation_compatibility.html)
+
+### Removed
+
+- The deprecated `optimizations.get_workload_opportunities` function has been removed
+
 ## 1.2.5 - 2024-10-07
 
 ### Added
