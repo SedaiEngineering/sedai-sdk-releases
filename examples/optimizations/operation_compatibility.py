@@ -1,13 +1,11 @@
 from sedai import operation_compatibility
 
-account_ids = ['account_id']
 optimization_modes = ['DATA_PILOT']
 availability_modes = ['CO_PILOT']
 is_compatible = False
 
 # Get the eligilibity details for all resources meeting the specified criteria ineligible for Sedai action
 eligibility_details = operation_compatibility.get_operation_compatibility(
-    account_ids=account_ids,
     optimization_modes=optimization_modes,
     availability_modes=availability_modes,
     is_compatible=is_compatible,
