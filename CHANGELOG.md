@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1 - 2025-01-23
+
+### Added
+
+- [New Relic monitoring provider support](https://sedaiengineering.github.io/sedai-sdk-python/sedai/monitoring_provider.html#add_new_relic_monitoring)
+
 ## 1.3.0 - 2024-11-12
 
 ### Added
