@@ -15,7 +15,7 @@ if len(args) != 1:
 
 account_name = args[0]
 
-kubernetes_account = account.create_account(
+sedai_account_id = account.create_account(
     name=account_name,
     cloud_provider='KUBERNETES',
     integration_type='AGENT_BASED',

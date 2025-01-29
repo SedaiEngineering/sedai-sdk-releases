@@ -24,7 +24,7 @@ credentials = credentials.AwsRoleCredentials(
     external_id=external_id
 )
 
-account_status = account.create_account(
+sedai_account_id = account.create_account(
     name=account_name,
     cloud_provider='AWS',
     integration_type='AGENTLESS',
