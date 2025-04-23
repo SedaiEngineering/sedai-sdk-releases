@@ -10,20 +10,35 @@ def get_opportunities_for_account(account_id: str):
 
 def show_cluster_opportunities(
     cluster_id: str,
-    targets: List[str] = None,
+    include_both_workload_and_node: bool = False ,
+    targets: List[str] = None
 ):
-    cluster_opts = optimizations.get_cluster_opportunities(cluster_id, targets)
+    cluster_opts = optimizations.get_cluster_opportunities(
+        cluster_id = cluster_id,
+        optimization_targets=targets,
+        include_workload_optimization=include_both_workload_and_node)
     if cluster_opts is None:
         print(f"No optimizations for cluster: {cluster_id}")
         return
 
-    costProjection = cluster_opts.cost_projection_summary
+    work_load_cost_projection = cluster_opts.workload_cost_projection_summary
+    node_cost_projection = cluster_opts.node_cost_projection_summary
+
     print(f"Opportunities available for cluster: {cluster_opts.resource_name}")
-    if costProjection is not None:
-        print(f"Current monthly cost: {costProjection.currentMonthlyCost}")
-        print(f"Total predicted monthly cost: {costProjection.predictedMonthlyCost.total}")
-        print(f"Predicted monthly savings: {costProjection.predictedMonthlySavings}")
+    if work_load_cost_projection is not None:
+        print(f"Cost projections for workload :")
+        print(f"Current average monthly cost: {work_load_cost_projection.currentAverageMonthlyCost}")
+        print(f"Predicted average monthly cost: {work_load_cost_projection.predictedAverageMonthlyCost}")
+        print(f"Predicted average monthly savings: {work_load_cost_projection.predictedAverageMonthlySavings}")
         print("\n")
+
+    if node_cost_projection is not None:
+        print(f"Cost projections for Node :")
+        print(f"Current average monthly cost: {node_cost_projection.currentAverageMonthlyCost}")
+        print(f"Predicted average monthly cost: {node_cost_projection.predictedAverageMonthlyCost}")
+        print(f"Predicted average monthly savings: {node_cost_projection.predictedAverageMonthlySavings}")
+        print("\n")
+
 
     workload_optimizations = cluster_opts.workload_optimizations
     for optimization in workload_optimizations:
@@ -136,15 +151,19 @@ def show_optimizations(starttime: datetime, endtime: datetime, resource_id: str)
             print(models.to_json(opt.recommended_resource_config))
 
 
-account_id = "account_id"
+account_id = "cluster_id"
 opts = get_opportunities_for_account(account_id)
 print("Available opportunities:")
 for opt_details in opts['content']:
     cluster_id = opt_details['clusterId']
-    targets = ["NODE", "WORK_LOAD", "PURCHASE_OPTION"]
+    include_both_workload_and_node = True
+    targets = ['NODE','WORK_LOAD']
+    # targets = None
+
     show_cluster_opportunities(
-        cluster_id=cluster_id,
-        targets=targets,
+        cluster_id = cluster_id,
+        include_both_workload_and_node = include_both_workload_and_node,
+        targets = targets
     )
 
 starttime_str = "09/01/23 00:00:00"

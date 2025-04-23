@@ -24,22 +24,17 @@ credentials = credentials.AwsRoleCredentials(
     external_id=external_id
 )
 
-account_status = account.create_account(
+sedai_account_id = account.create_account(
     name=account_name,
     cloud_provider='AWS',
     integration_type='AGENTLESS',
     credentials=credentials)
 
-
-accounts = account.search_accounts_by_name(account_name)
-aws_account = accounts[0]
-account_id = aws_account.id
-
-print(f"Account {account_name} created successfully with id {account_id}")
+print(f"Account {account_name} created successfully with id {sedai_account_id}")
 
 # Create the monitoring provider
 monitoring_provider.add_cloudwatch_monitoring(
-    account_id=account_id,
-    credentials=credentials
+    account_id=sedai_account_id,
+    use_account_credentials=True
 )
 

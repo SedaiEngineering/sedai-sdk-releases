@@ -39,15 +39,8 @@ def setup_cluster(cluster):
         "notes": []
     }
 
-    # Check if the account_name exists
-    accounts = account.search_accounts_by_name(ret_cluster['cluster_name'])
-    if len(accounts) > 0:
-        ret_cluster["notes"].append(f"The account/cluster with name {ret_cluster['cluster_name']} already exists")
-        ret_cluster['status'] = 'Cluster already exists'
-        return ret_cluster
-
     # So ok to add the cluster
-    kubernetes_account_status = account.create_account(
+    sedai_account_id = account.create_account(
         name=ret_cluster['cluster_name'],
         cloud_provider='KUBERNETES',
         integration_type='AGENT_BASED',
@@ -55,8 +48,8 @@ def setup_cluster(cluster):
         cluster_provider='GCP'
     )
 
-    if not kubernetes_account_status:
-        ret_cluster["notes"].append(f"Failed to create account: {kubernetes_account_status}")
+    if not sedai_account_id:
+        ret_cluster["notes"].append(f"Failed to create account: {ret_cluster['cluster_name']}")
         ret_cluster['status'] = 'Failed to create account'
         return ret_cluster
     else:

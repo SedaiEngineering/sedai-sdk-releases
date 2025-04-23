@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.2 - 2025-04-23
+
+### Added
+
+- [New version of cluster opportunities api](https://sedaiengineering.github.io/sedai-sdk-python/sedai/optimizations.html#get_cluster_opportunities)
+  - `optimizations.get_cluster_opportunities` api 's param `targets` is deprecated and
+    marked for removal in future version
+- [Introduction of new fields in ClusterOpportunity class](https://sedaiengineering.github.io/sedai-sdk-python/sedai/optimizations.html#ClusterOpportunity)
+  - `cost_projection_summary` field is deprecated as of 1.3.2 and will be removed in a future version.
+  - Support for proxy connections
+
 ## 1.3.1 - 2025-01-23
 
 ### Added
