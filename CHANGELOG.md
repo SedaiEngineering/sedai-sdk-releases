@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.4 - 2025-07-29
+
+### Fixed
+
+- Issue parsing `account.update_account` response
+
 ## 1.3.3 - 2025-07-07
 
 ### Added
