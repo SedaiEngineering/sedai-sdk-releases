@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.5 - 2025-08-15
+
+### Fixed
+
+- Issue updating group settings
+
 ## 1.3.4 - 2025-07-29
 
 ### Fixed
