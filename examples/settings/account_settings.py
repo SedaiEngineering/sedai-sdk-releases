@@ -1,14 +1,8 @@
-from sedai.settings import get_account_settings, update_account_settings
+from sedai.settings import get_account_settings, update_account_settings, SettingsConfigMode
 from sedai.settings import Settings
 
-account_id = '8ryzpatt'
+account_id = 'account_id'
 account_settings: Settings = get_account_settings(account_id)
-
-# If mode is MANUAL, set it to AUTO, else set it to MANUAL
-def swap_mode(mode):
-    if mode == 'MANUAL':
-        return 'AUTO'
-    return 'MANUAL'
 
 def increment_value(value):
     if value is None:
@@ -31,8 +25,8 @@ print("Vertical Scaling Min Per Container Memory", account_settings.kube_app_set
 
 
 # Swap the modes, status and increment the values
-account_settings.kube_app_settings.availabilityMode = swap_mode(account_settings.kube_app_settings.availabilityMode)
-account_settings.kube_app_settings.optimizationMode = swap_mode(account_settings.kube_app_settings.optimizationMode)
+account_settings.kube_app_settings.availabilityMode = SettingsConfigMode.DATA_PILOT
+account_settings.kube_app_settings.optimizationMode = SettingsConfigMode.CO_PILOT
 
 account_settings.kube_app_settings.horizontalScaling_enabled = not account_settings.kube_app_settings.horizontalScaling_enabled
 account_settings.kube_app_settings.horizontalScaling_minReplicas = increment_value(account_settings.kube_app_settings.horizontalScaling_minReplicas)

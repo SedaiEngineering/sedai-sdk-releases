@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.3.6 - 2025-09-11
+
+### Added
+
+- [SettingsConfigMode Enum](https://sedaiengineering.github.io/sedai-sdk-python/sedai/settings.html#SettingsConfigMode)
+    - Introduced a new `SettingsConfigMode` enum class for Sedai settings. This enum defines how Sedai manages resources by specifying configuration modes.
+
+    **Possible values:**
+    - `DATA_PILOT`: Provides recommendations for availability and optimization.
+    - `CO_PILOT`: Provides recommendations but requires manual action.
+    - `AUTO`: Manages the resource autonomously.
+
+    **Deprecated values:**
+    - `OFF`
+    - `MANUAL`
+
+
 ## 1.3.5 - 2025-08-15
 
 ### Fixed

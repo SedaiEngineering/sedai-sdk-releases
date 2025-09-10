@@ -1,15 +1,9 @@
-from sedai.settings import get_resource_settings, update_resource_settings
+from sedai.settings import get_resource_settings, update_resource_settings, SettingsConfigMode
 from sedai.settings import KubeAppSettings
 
-kube_resource_id = '8ryzpatt/Deployment/GKE - agentless/cert-manager/cert-manager'
+kube_resource_id = 'resource_id'
 
 kuber_resource_settings: KubeAppSettings = get_resource_settings(kube_resource_id)
-
-# If mode is MANUAL, set it to AUTO, else set it to MANUAL
-def swap_mode(mode):
-    if mode == 'MANUAL':
-        return 'AUTO'
-    return 'MANUAL'
 
 def increment_value(value):
     if value is None:
@@ -31,9 +25,9 @@ print("Vertical Scaling Min Per Container CPU", kuber_resource_settings.vertical
 print("Vertical Scaling Min Per Container Memory", kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
 
 
-# Swap the modes, status and increment the values
-kuber_resource_settings.availabilityMode = swap_mode(kuber_resource_settings.availabilityMode)
-kuber_resource_settings.optimizationMode = swap_mode(kuber_resource_settings.optimizationMode)
+# Changing the availability and Optimization modes.
+kuber_resource_settings.availabilityMode = SettingsConfigMode.DATA_PILOT
+kuber_resource_settings.optimizationMode = SettingsConfigMode.CO_PILOT
 
 kuber_resource_settings.horizontalScaling_enabled = not kuber_resource_settings.horizontalScaling_enabled
 kuber_resource_settings.horizontalScaling_minReplicas = increment_value(kuber_resource_settings.horizontalScaling_minReplicas)
