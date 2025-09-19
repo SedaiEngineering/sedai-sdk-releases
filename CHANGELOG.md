@@ -1,5 +1,17 @@
 # Changelog
 
+
+## 1.3.7 - 2025-09-12
+
+### Added
+
+- [Individual resource opportunity API](https://sedaiengineering.github.io/sedai-sdk-python/sedai/optimizations.html#get_opportunity_for_resource)
+  - New API endpoint to fetch individual optimization opportunities for Virtual Machines (VMs) and Storage Volumes.
+
+  - The `get_opportunity_for_resource` API accepts `provider_resource_id` as a parameter,
+      which corresponds to the instance ID for VMs and the volume ID for storage volumes.
+
+
 ## 1.3.6 - 2025-09-11
 
 ### Added
