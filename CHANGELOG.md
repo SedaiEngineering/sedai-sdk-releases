@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.8 - 2025-10-03
+
+### Fixed
+
+- Issue in datetime for `get_resource_optimizations`.
+- Issue with setting `horizontalScaling_replicaMultiplier` for `KubeAppSettings`.
 
 ## 1.3.7 - 2025-09-12
 
