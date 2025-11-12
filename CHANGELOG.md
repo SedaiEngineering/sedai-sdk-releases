@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.9 - 2025-11-12
+
+### Added
+
+- [Resource Tags API](https://sedaiengineering.github.io/sedai-sdk-python/sedai/resource.html)
+
 # 1.3.8 - 2025-10-03
 
 ### Fixed
