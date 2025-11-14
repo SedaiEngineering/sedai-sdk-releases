@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.3.10 - 2025-11-14
+
+### Added
+
+- [Update Datadog Monitoring Provider](https://sedaiengineering.github.io/sedai-sdk-python/sedai/monitoring_provider.html#add_or_update_datadog_monitoring)
+- [Hourly cost savings in resource optimizations](https://sedaiengineering.github.io/sedai-sdk-python/sedai/optimizations.html#ResourceOptimization.cost_change_per_hour)
+
 # 1.3.9 - 2025-11-12
 
 ### Added
