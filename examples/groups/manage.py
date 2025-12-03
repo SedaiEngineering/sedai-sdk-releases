@@ -91,19 +91,7 @@ print("Number of matching aws s3 buckets in the group: ", group.s3Count)
 print("Number of matching streaming resources in the group: ", group.streamingCount)
 
 
-# Getting the settings of a newly created will fail
-
-try:
-    manage_settings.get_group_settings(group.groupId)
-except Exception as e:
-    print(f"Failed to get settings of group {group_name} with Id {group.groupId}")
-    print(e)
-# This will fail because we just created a group. We have to explicitly initialize the settings for the group
-
-manage_settings.initialize_group_settings(group.groupId)
-print(f"Settings initialized for group {group_name} with Id {group.groupId}")
-
-# Now we can get the settings of the group
+# Settings of the group is initialized when the group is created, so to get settings of the group call get group settings
 group_settings = manage_settings.get_group_settings(group.groupId)
 print(f"Settings of group {group_name} with Id {group.groupId}")
 print(group_settings)

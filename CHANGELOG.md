@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.11 - 2025-12-03
+
+### Added
+
+- [Group Details API](https://sedaiengineering.github.io/sedai-sdk-python/sedai/groups.html#get_group_by_id)
+
 # 1.3.10 - 2025-11-14
 
 ### Added
