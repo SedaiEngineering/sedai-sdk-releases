@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.12 - 2026-02-19
+
+### Added
+
+- GCP Account Onboarding
+
 # 1.3.11 - 2025-12-03
 
 ### Added
