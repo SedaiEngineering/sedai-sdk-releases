@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.3.13 - 2026-03-09
+
+### Added
+
+- Manage prohibited namespaces
+- [Smart Agent Health API](https://sedaiengineering.github.io/sedai-sdk-python/sedai/health.html)
+
 # 1.3.12 - 2026-02-19
 
 ### Added
