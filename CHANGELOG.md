@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.14 - 2026-03-16
+
+### Added
+
+- [Manage group priorities](https://sedaiengineering.github.io/sedai-sdk-python/sedai/groups.html#update_group_priorities)
+
 # 1.3.13 - 2026-03-09
 
 ### Added
