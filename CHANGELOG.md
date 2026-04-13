@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.16 - 2026-04-13
+
+### Added
+
+- GCP Account Update
+
 # 1.3.15 - 2026-04-02
 
 ### Fixed
