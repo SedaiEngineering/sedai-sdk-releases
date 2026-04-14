@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.17 - 2026-04-14
+
+### Added
+
+- Azure Account Update
+
 # 1.3.16 - 2026-04-13
 
 ### Added
