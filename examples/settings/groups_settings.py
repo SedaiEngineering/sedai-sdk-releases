@@ -26,6 +26,8 @@ print("Horizontal Scaling Replica Multiplier", group_settings.kube_app_settings.
 print("Vertical Scaling Enabled", group_settings.kube_app_settings.verticalScaling_enabled)
 print("Vertical Scaling Min Per Container CPU", group_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores)
 print("Vertical Scaling Min Per Container Memory", group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
+print("Vertical Scaling Max Per Container CPU", group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
+print("Vertical Scaling Max Per Container Memory", group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 
 # Swap the modes, status and increment the values
@@ -40,6 +42,8 @@ group_settings.kube_app_settings.horizontalScaling_replicaMultiplier = increment
 group_settings.kube_app_settings.verticalScaling_enabled = not group_settings.kube_app_settings.verticalScaling_enabled
 group_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores = increment_value(group_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores)
 group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes = increment_value(group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
+group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores = increment_value(group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
+group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes = increment_value(group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 update_group_settings(group_id, group_settings)
 print("Updated Group Settings")
@@ -60,4 +64,5 @@ print("Horizontal Scaling Replica Multiplier", group_settings.kube_app_settings.
 print("Vertical Scaling Enabled", group_settings.kube_app_settings.verticalScaling_enabled)
 print("Vertical Scaling Min Per Container CPU", group_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores)
 print("Vertical Scaling Min Per Container Memory", group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
-
+print("Vertical Scaling Max Per Container CPU", group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
+print("Vertical Scaling Max Per Container Memory", group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)

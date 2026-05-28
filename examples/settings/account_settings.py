@@ -1,7 +1,7 @@
 from sedai.settings import get_account_settings, update_account_settings, SettingsConfigMode
 from sedai.settings import Settings
 
-account_id = 'account_id'
+account_id = 'vqxi7rgo'
 account_settings: Settings = get_account_settings(account_id)
 
 def increment_value(value):
@@ -22,6 +22,8 @@ print("Horizontal Scaling Replica Multiplier", account_settings.kube_app_setting
 print("Vertical Scaling Enabled", account_settings.kube_app_settings.verticalScaling_enabled)
 print("Vertical Scaling Min Per Container CPU", account_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores)
 print("Vertical Scaling Min Per Container Memory", account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
+print("Vertical Scaling Max Per Container CPU", account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
+print("Vertical Scaling Max Per Container Memory", account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 
 # Swap the modes, status and increment the values
@@ -36,6 +38,8 @@ account_settings.kube_app_settings.horizontalScaling_replicaMultiplier = increme
 account_settings.kube_app_settings.verticalScaling_enabled = not account_settings.kube_app_settings.verticalScaling_enabled
 account_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores = increment_value(account_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores)
 account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes = increment_value(account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
+account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores = increment_value(account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
+account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes = increment_value(account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 update_account_settings(account_id, account_settings)
 print("Updated Resource Settings")
@@ -55,8 +59,9 @@ print("Horizontal Scaling Replica Multiplier", account_settings.kube_app_setting
 
 print("Vertical Scaling Enabled", account_settings.kube_app_settings.verticalScaling_enabled)
 print("Vertical Scaling Min Per Container CPU", account_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores)
-
 print("Vertical Scaling Min Per Container Memory", account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
+print("Vertical Scaling Max Per Container CPU", account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
+print("Vertical Scaling Max Per Container Memory", account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 
 

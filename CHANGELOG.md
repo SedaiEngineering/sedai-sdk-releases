@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.19 - 2026-05-28
+
+### Added
+
+- [Max resource limits for Kube recommendations](https://sedaiengineering.github.io/sedai-sdk-python/sedai/settings.html#KubeAppSettings.verticalScaling_maxPerContainerCpuInCores)
+
 # 1.3.18 - 2026-05-08
 
 ### Added

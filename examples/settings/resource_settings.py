@@ -23,6 +23,8 @@ print("Horizontal Scaling Replica Multiplier", kuber_resource_settings.horizonta
 print("Vertical Scaling Enabled", kuber_resource_settings.verticalScaling_enabled)
 print("Vertical Scaling Min Per Container CPU", kuber_resource_settings.verticalScaling_minPerContainerCpuInCores)
 print("Vertical Scaling Min Per Container Memory", kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
+print("Vertical Scaling Max Per Container CPU", kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores)
+print("Vertical Scaling Max Per Container Memory", kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 
 # Changing the availability and Optimization modes.
@@ -37,6 +39,8 @@ kuber_resource_settings.horizontalScaling_replicaMultiplier = increment_value(ku
 kuber_resource_settings.verticalScaling_enabled = not kuber_resource_settings.verticalScaling_enabled
 kuber_resource_settings.verticalScaling_minPerContainerCpuInCores = increment_value(kuber_resource_settings.verticalScaling_minPerContainerCpuInCores)
 kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes = increment_value(kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
+kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores = increment_value(kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores)
+kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes = increment_value(kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
 resp = update_resource_settings(kube_resource_id, kuber_resource_settings)
 print(resp)
@@ -58,4 +62,6 @@ print("Horizontal Scaling Replica Multiplier", kuber_resource_settings.horizonta
 print("Vertical Scaling Enabled", kuber_resource_settings.verticalScaling_enabled)
 print("Vertical Scaling Min Per Container CPU", kuber_resource_settings.verticalScaling_minPerContainerCpuInCores)
 print("Vertical Scaling Min Per Container Memory", kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
+print("Vertical Scaling Max Per Container CPU", kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores)
+print("Vertical Scaling Max Per Container Memory", kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes)
 
