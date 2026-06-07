@@ -24,6 +24,7 @@ print("Vertical Scaling Min Per Container CPU", account_settings.kube_app_settin
 print("Vertical Scaling Min Per Container Memory", account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
 print("Vertical Scaling Max Per Container CPU", account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
 print("Vertical Scaling Max Per Container Memory", account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
+print("Optimize PVC Deployments", account_settings.kube_app_settings.optimizePvcDeployments)
 
 
 # Swap the modes, status and increment the values
@@ -40,6 +41,7 @@ account_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores = i
 account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes = increment_value(account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
 account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores = increment_value(account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
 account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes = increment_value(account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
+account_settings.kube_app_settings.optimizePvcDeployments = not account_settings.kube_app_settings.optimizePvcDeployments
 
 update_account_settings(account_id, account_settings)
 print("Updated Resource Settings")
@@ -62,6 +64,7 @@ print("Vertical Scaling Min Per Container CPU", account_settings.kube_app_settin
 print("Vertical Scaling Min Per Container Memory", account_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
 print("Vertical Scaling Max Per Container CPU", account_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
 print("Vertical Scaling Max Per Container Memory", account_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
+print("Optimize PVC Deployments", account_settings.kube_app_settings.optimizePvcDeployments)
 
 
 

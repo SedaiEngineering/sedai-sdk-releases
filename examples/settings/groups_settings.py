@@ -28,6 +28,7 @@ print("Vertical Scaling Min Per Container CPU", group_settings.kube_app_settings
 print("Vertical Scaling Min Per Container Memory", group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
 print("Vertical Scaling Max Per Container CPU", group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
 print("Vertical Scaling Max Per Container Memory", group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
+print("Optimize PVC Deployments", group_settings.kube_app_settings.optimizePvcDeployments)
 
 
 # Swap the modes, status and increment the values
@@ -44,6 +45,7 @@ group_settings.kube_app_settings.verticalScaling_minPerContainerCpuInCores = inc
 group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes = increment_value(group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
 group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores = increment_value(group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
 group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes = increment_value(group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
+group_settings.kube_app_settings.optimizePvcDeployments = not group_settings.kube_app_settings.optimizePvcDeployments
 
 update_group_settings(group_id, group_settings)
 print("Updated Group Settings")
@@ -66,3 +68,4 @@ print("Vertical Scaling Min Per Container CPU", group_settings.kube_app_settings
 print("Vertical Scaling Min Per Container Memory", group_settings.kube_app_settings.verticalScaling_minPerContainerMemoryInBytes)
 print("Vertical Scaling Max Per Container CPU", group_settings.kube_app_settings.verticalScaling_maxPerContainerCpuInCores)
 print("Vertical Scaling Max Per Container Memory", group_settings.kube_app_settings.verticalScaling_maxPerContainerMemoryInBytes)
+print("Optimize PVC Deployments", group_settings.kube_app_settings.optimizePvcDeployments)

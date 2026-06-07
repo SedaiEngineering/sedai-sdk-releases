@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.20 - 2026-07-07
+
+### Added
+
+- [PVC Optimization Setting](https://sedaiengineering.github.io/sedai-sdk-python/sedai/settings.html#KubeAppSettings.optimizePvcDeployments)
+
 # 1.3.19 - 2026-05-28
 
 ### Added

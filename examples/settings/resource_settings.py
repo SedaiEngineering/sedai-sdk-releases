@@ -25,6 +25,7 @@ print("Vertical Scaling Min Per Container CPU", kuber_resource_settings.vertical
 print("Vertical Scaling Min Per Container Memory", kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
 print("Vertical Scaling Max Per Container CPU", kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores)
 print("Vertical Scaling Max Per Container Memory", kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes)
+print("Optimize PVC Deployments", kuber_resource_settings.optimizePvcDeployments)
 
 
 # Changing the availability and Optimization modes.
@@ -41,6 +42,7 @@ kuber_resource_settings.verticalScaling_minPerContainerCpuInCores = increment_va
 kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes = increment_value(kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
 kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores = increment_value(kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores)
 kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes = increment_value(kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes)
+kuber_resource_settings.optimizePvcDeployments = not kuber_resource_settings.optimizePvcDeployments
 
 resp = update_resource_settings(kube_resource_id, kuber_resource_settings)
 print(resp)
@@ -64,4 +66,5 @@ print("Vertical Scaling Min Per Container CPU", kuber_resource_settings.vertical
 print("Vertical Scaling Min Per Container Memory", kuber_resource_settings.verticalScaling_minPerContainerMemoryInBytes)
 print("Vertical Scaling Max Per Container CPU", kuber_resource_settings.verticalScaling_maxPerContainerCpuInCores)
 print("Vertical Scaling Max Per Container Memory", kuber_resource_settings.verticalScaling_maxPerContainerMemoryInBytes)
+print("Optimize PVC Deployments", kuber_resource_settings.optimizePvcDeployments)
 
