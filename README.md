@@ -21,7 +21,7 @@ Requires Node.js ≥ 16.
 
 Install the SDK:
 
-    npm install https://github.com/SedaiEngineering/sedai-sdk-releases/raw/main/sedai-sdk-latest.tgz
+    npm install https://github.com/SedaiEngineering/sedai-sdk-releases/raw/main/sedai-sdk-typescript-latest.tgz
 
 Configure and use:
 
