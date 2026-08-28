@@ -1,9 +1,9 @@
 /**
  * Resource optimizations — getResourceOptimizations() / getRecommendedResourceState()
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/optimizations/resource_optimizations.ts
+ *   npx ts-node -P tsconfig.json optimizations/resource_optimizations.ts
  */
 
 import { configure, getResourceOptimizations, getRecommendedResourceState } from 'sedai-sdk';

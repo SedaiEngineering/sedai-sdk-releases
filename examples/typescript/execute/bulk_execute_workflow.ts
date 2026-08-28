@@ -15,10 +15,10 @@
  * safe test environment. Never point SEDAI_BASE_URL at production unless you
  * intend to execute the changes.
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
  *   SEDAI_PROVIDER_RESOURCE_IDS='/subscriptions/.../virtualMachines/vm-1,/subscriptions/.../virtualMachines/vm-2' \
- *   npx ts-node -P examples/tsconfig.json examples/execute/bulk_execute_workflow.ts
+ *   npx ts-node -P tsconfig.json execute/bulk_execute_workflow.ts
  */
 
 import {

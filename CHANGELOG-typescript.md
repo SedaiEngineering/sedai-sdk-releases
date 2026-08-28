@@ -14,6 +14,7 @@ For the Python SDK, see [CHANGELOG.md](./CHANGELOG.md).
 
       git clone https://github.com/SedaiEngineering/sedai-sdk-releases.git
       cd sedai-sdk-releases/examples/typescript
+      npm install
 
   *Why:* the bundled copy carried a `tsconfig.json` written for the SDK's own build, mapping `sedai-sdk` to a relative `../dist` path that does not exist inside `node_modules`. It could never compile where it was shipped. Keeping a single copy in this repo removes the duplication that let that go unnoticed. The examples themselves are unchanged and the tarball is smaller as a result.
 - **Example environment variables now all use the `SEDAI_` prefix.** Rename these in any scripts or CI that run the examples:

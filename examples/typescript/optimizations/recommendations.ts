@@ -1,9 +1,9 @@
 /**
  * Recommendations — getRecommendations() / getRecommendationsV3()
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/optimizations/recommendations.ts
+ *   npx ts-node -P tsconfig.json optimizations/recommendations.ts
  */
 
 import { configure, getRecommendations, getRecommendationsV3 } from 'sedai-sdk';

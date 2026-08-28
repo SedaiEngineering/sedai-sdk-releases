@@ -1,9 +1,9 @@
 /**
  * Resource settings — getResourceSettings() / updateResourceSettings()
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/settings/resource_settings.ts
+ *   npx ts-node -P tsconfig.json settings/resource_settings.ts
  *
  * Note: updateResourceSettings() requires an admin-role API key.
  */

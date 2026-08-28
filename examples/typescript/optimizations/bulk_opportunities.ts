@@ -1,9 +1,9 @@
 /**
  * Bulk resource opportunities — getOpportunitiesForResources()
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/optimizations/bulk_opportunities.ts
+ *   npx ts-node -P tsconfig.json optimizations/bulk_opportunities.ts
  *
  * Requires: npm run build (so examples/tsconfig.json can resolve sedai-sdk → dist/)
  */

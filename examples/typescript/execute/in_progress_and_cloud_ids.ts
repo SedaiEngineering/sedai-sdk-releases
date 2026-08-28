@@ -4,9 +4,9 @@
  * environment at any time. Unlike bulk_execute_workflow.ts, this does not call
  * bulkExecuteWithCopilot() and carries no real-execution risk.
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/execute/in_progress_and_cloud_ids.ts
+ *   npx ts-node -P tsconfig.json execute/in_progress_and_cloud_ids.ts
  */
 
 import { configure, getInProgressExecutions, getCloudProviderIds } from 'sedai-sdk';

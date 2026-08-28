@@ -10,10 +10,10 @@
  * a safe test resource. Never point SEDAI_BASE_URL at a production environment
  * unless you intend to execute the change.
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
  *   SEDAI_RESOURCE_ID=<sedai-resource-id> \
- *   npx ts-node -P examples/tsconfig.json examples/execute/execute_opportunity.ts
+ *   npx ts-node -P tsconfig.json execute/execute_opportunity.ts
  *
  * To get a sedaiResourceId, run bulk_opportunities.ts first and copy a value
  * where resourceType is 'vm' or 'volume' and configMode is 'CO_PILOT'.

@@ -20,15 +20,22 @@ account ID that most other examples need.
 
 ### Setup
 
-Install the SDK plus the TypeScript toolchain, then run any example with `npx ts-node`:
+The examples directory is a self-contained npm project — it declares the SDK and the TypeScript
+toolchain itself, so one `npm install` is all you need:
 
 ```bash
-npm install https://github.com/SedaiEngineering/sedai-sdk-releases/raw/main/sedai-sdk-typescript-latest.tgz
-npm install --save-dev typescript ts-node @types/node
-npx ts-node examples/typescript/gsk_quickstart.ts
+git clone https://github.com/SedaiEngineering/sedai-sdk-releases.git
+cd sedai-sdk-releases/examples/typescript
+npm install
+
+SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
+  npx ts-node -P tsconfig.json gsk_quickstart.ts
 ```
 
-A ready-to-use [`typescript/tsconfig.json`](./typescript/tsconfig.json) is included.
+**Run every example from this directory** — the paths in each file's header are relative to it.
+A ready-to-use [`typescript/tsconfig.json`](./typescript/tsconfig.json) and
+[`typescript/package.json`](./typescript/package.json) are included; `package.json` pins
+`typescript@5`, because `ts-node` does not work with TypeScript 7.
 
 ### Start here
 
