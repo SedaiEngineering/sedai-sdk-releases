@@ -1,25 +1,7 @@
-# Changelog
+# Changelog — Python SDK
 
-> Entries are labeled by SDK. Unlabeled entries below this point are the Python SDK's history —
-> the TypeScript SDK didn't bump version numbers before 1.1.0, so it has no earlier entries here.
-
-# 1.2.1 - 2026-08-28 (TypeScript SDK)
-
-### Fixed
-
-- `BulkExecutionSubmission.transactionId` is now typed `string | null`. When none of the submitted resources are recognized, the API returns `submitted: 0` and no transaction ID — there is nothing to poll. Check for `null` before calling `getExecutionStatus()`/`getExecutionItems()`. Type-only change; runtime behaviour is unchanged from 1.2.0.
-
-### Added
-
-- Runnable TypeScript examples under [`examples/typescript/`](./examples/typescript) — accounts, optimizations, settings, and bulk execution, including transaction-level tracking. Each file documents its own environment variables and run command.
-
-# 1.2.0 - 2026-08-28 (TypeScript SDK)
-
-### Added
-
-- Transaction-level bulk execution tracking: `submitBulkExecutionRequest()`, `getExecutionStatus()`, `getExecutionItems()` — submit a batch of resources and poll a single transaction ID for completion, instead of tracking a resource-ID list yourself.
-- `includeItemsWhenComplete` option on `getExecutionStatus()` — get per-resource results back inline once a transaction finishes, without a separate `getExecutionItems()` call.
-- `cloudProviderId` field on every execution item — the native cloud identifier (e.g. an Azure resource path or AWS ARN) alongside the Sedai resource ID. Identical to `resourceId` for Kubernetes resources.
+Changes to the `sedai_sdk` Python package, newest first.
+For the TypeScript / JavaScript SDK, see [CHANGELOG-typescript.md](./CHANGELOG-typescript.md).
 
 # 1.3.20 - 2026-07-07
 

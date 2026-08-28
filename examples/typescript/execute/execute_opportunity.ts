@@ -12,7 +12,7 @@
  *
  * Run:
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   RESOURCE_ID=<sedai-resource-id> \
+ *   SEDAI_RESOURCE_ID=<sedai-resource-id> \
  *   npx ts-node -P examples/tsconfig.json examples/execute/execute_opportunity.ts
  *
  * To get a sedaiResourceId, run bulk_opportunities.ts first and copy a value
@@ -36,21 +36,21 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-const RESOURCE_ID = process.env.RESOURCE_ID ?? '';
+const SEDAI_RESOURCE_ID = process.env.SEDAI_RESOURCE_ID ?? '';
 const POLL_INTERVAL_MS = 5000;
 const MAX_POLLS = 24; // 2 minutes
 const TERMINAL = new Set(['SUCCESSFUL', 'FAILED', 'USER_REJECTED', 'UNSAFE_TO_ACT', 'EXPIRED']);
 
 async function main() {
-  if (!RESOURCE_ID) {
-    console.error('Set RESOURCE_ID to a Sedai internal resource ID (sedaiResourceId from bulk_opportunities.ts)');
+  if (!SEDAI_RESOURCE_ID) {
+    console.error('Set SEDAI_RESOURCE_ID to a Sedai internal resource ID (sedaiResourceId from bulk_opportunities.ts)');
     process.exit(1);
   }
 
   // --- Step 1: Check current recommendation status before executing ---
-  console.log(`\nChecking current recommendation for: ${RESOURCE_ID}`);
+  console.log(`\nChecking current recommendation for: ${SEDAI_RESOURCE_ID}`);
   let currentStatus: string | null = null;
-  for await (const rec of getRecommendationsV3({ resourceId: RESOURCE_ID })) {
+  for await (const rec of getRecommendationsV3({ resourceId: SEDAI_RESOURCE_ID })) {
     currentStatus = rec.status;
     console.log(`  Status: ${rec.status}, operation: ${rec.operation?.type ?? 'none'}`);
     break;
@@ -68,7 +68,7 @@ async function main() {
 
   // --- Step 2: Execute ---
   console.log('\nExecuting optimization via executeWithCopilot()...');
-  const submitted = await executeWithCopilot(RESOURCE_ID);
+  const submitted = await executeWithCopilot(SEDAI_RESOURCE_ID);
   console.log(`  Submitted: ${submitted}`);
 
   // --- Step 3: Poll for status ---
@@ -76,7 +76,7 @@ async function main() {
   for (let i = 0; i < MAX_POLLS; i++) {
     await new Promise(res => setTimeout(res, POLL_INTERVAL_MS));
 
-    for await (const rec of getRecommendationsV3({ resourceId: RESOURCE_ID })) {
+    for await (const rec of getRecommendationsV3({ resourceId: SEDAI_RESOURCE_ID })) {
       const status = rec.status;
       console.log(`  [poll ${i + 1}] Status: ${status}`);
 
