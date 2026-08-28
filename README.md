@@ -167,6 +167,32 @@ npm install --save-dev tsx
 npx tsx exercise.ts
 ```
 
+### Every call fails with `401`
+
+The token is missing, wrong, or expired. The SDK surfaces the status but cannot tell you which:
+
+```
+GET /api/site/accounts failed: Request failed with status code 401
+```
+
+Check, in order:
+
+1. **`SEDAI_API_TOKEN` is actually set** in the environment you are running from — an unset variable
+   often falls through to a placeholder rather than erroring.
+2. **The token has not expired.** API keys expire. Sedai tokens are JWTs, so you can read the expiry
+   without calling the API:
+   ```bash
+   echo "$SEDAI_API_TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | tr ',' '\n' | grep exp
+   ```
+   That prints `"exp":<unix-seconds>`; `date -r <seconds>` converts it. If it is in the past,
+   generate a new key: Settings → API Keys → Create New Key.
+3. **The token belongs to the tenant in `SEDAI_BASE_URL`.** A key from one Sedai instance returns
+   401 against another.
+
+A `403` rather than a `401` means the opposite problem — the token is valid but lacks the role, or
+the tenant is missing a feature flag. See the status table in
+[REFERENCE-typescript.md](./REFERENCE-typescript.md).
+
 ### `error TS5102: Option 'baseUrl' has been removed`
 
 `baseUrl` was removed in TypeScript 7. Delete it from your `tsconfig.json` — the SDK resolves from
