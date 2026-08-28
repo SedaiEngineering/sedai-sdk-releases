@@ -13,10 +13,10 @@
  *
  * Run (live execute on a specific resource):
  *   SEDAI_BASE_URL=https://gsk.sedai.app SEDAI_API_TOKEN=your-token \
- *   EXECUTE_RESOURCE_ID=<sedaiResourceId> \
+ *   SEDAI_EXECUTE_RESOURCE_ID=<sedaiResourceId> \
  *   npx ts-node -P examples/tsconfig.json examples/gsk_quickstart.ts
  *
- * ⚠️  WARNING: Setting EXECUTE_RESOURCE_ID triggers a real optimization.
+ * ⚠️  WARNING: Setting SEDAI_EXECUTE_RESOURCE_ID triggers a real optimization.
  * Only use a resource you have confirmed is safe to change.
  */
 
@@ -36,7 +36,7 @@ configure({
 
 // Set this to a sedaiResourceId (from Step 2 output) to trigger execution in Step 3.
 // Leave unset to run Steps 1 and 2 only (safe, read-only).
-const EXECUTE_RESOURCE_ID = process.env.EXECUTE_RESOURCE_ID ?? '';
+const SEDAI_EXECUTE_RESOURCE_ID = process.env.SEDAI_EXECUTE_RESOURCE_ID ?? '';
 
 const POLL_INTERVAL_MS = 5000;
 const MAX_POLLS = 24; // 2 minutes
@@ -86,7 +86,7 @@ async function main() {
 
     const vm = opp as VMOpportunityDetails;
     console.log(`\n  ${vm.resourceName}`);
-    console.log(`    sedaiResourceId:    ${vm.sedaiResourceId}   ← use this as EXECUTE_RESOURCE_ID`);
+    console.log(`    sedaiResourceId:    ${vm.sedaiResourceId}   ← use this as SEDAI_EXECUTE_RESOURCE_ID`);
     console.log(`    Status:             ${vm.opportunityStatus}`);
     console.log(`    Current type:       ${vm.currentInstanceType}`);
     console.log(`    Recommended type:   ${vm.recommendedInstanceType}`);
@@ -100,17 +100,17 @@ async function main() {
   }
 
   // ---------------------------------------------------------------------------
-  // Step 3 — Execute (only runs if EXECUTE_RESOURCE_ID is set)
+  // Step 3 — Execute (only runs if SEDAI_EXECUTE_RESOURCE_ID is set)
   // ---------------------------------------------------------------------------
-  if (!EXECUTE_RESOURCE_ID) {
+  if (!SEDAI_EXECUTE_RESOURCE_ID) {
     console.log('\n=== Step 3: Execute ===');
-    console.log('  Skipped — set EXECUTE_RESOURCE_ID to a sedaiResourceId above to trigger execution.');
+    console.log('  Skipped — set SEDAI_EXECUTE_RESOURCE_ID to a sedaiResourceId above to trigger execution.');
     return;
   }
 
-  const target = opportunities.find(o => o.sedaiResourceId === EXECUTE_RESOURCE_ID);
+  const target = opportunities.find(o => o.sedaiResourceId === SEDAI_EXECUTE_RESOURCE_ID);
   if (!target) {
-    console.error(`\nERROR: ${EXECUTE_RESOURCE_ID} not found in CO_PILOT opportunities for this account.`);
+    console.error(`\nERROR: ${SEDAI_EXECUTE_RESOURCE_ID} not found in CO_PILOT opportunities for this account.`);
     console.error('Make sure the resource is in CO_PILOT mode and belongs to the selected account.');
     return;
   }
@@ -121,7 +121,7 @@ async function main() {
 
   // Verify status is PROPOSED before executing
   let currentStatus: string | null = null;
-  for await (const rec of getRecommendationsV3({ resourceId: EXECUTE_RESOURCE_ID })) {
+  for await (const rec of getRecommendationsV3({ resourceId: SEDAI_EXECUTE_RESOURCE_ID })) {
     currentStatus = rec.status;
     break;
   }
@@ -132,7 +132,7 @@ async function main() {
   }
 
   console.log('\n  Submitting execution...');
-  const submitted = await executeWithCopilot(EXECUTE_RESOURCE_ID);
+  const submitted = await executeWithCopilot(SEDAI_EXECUTE_RESOURCE_ID);
   console.log(`  Submitted: ${submitted}`);
 
   // ---------------------------------------------------------------------------
@@ -142,7 +142,7 @@ async function main() {
   for (let i = 0; i < MAX_POLLS; i++) {
     await new Promise(res => setTimeout(res, POLL_INTERVAL_MS));
 
-    for await (const rec of getRecommendationsV3({ resourceId: EXECUTE_RESOURCE_ID })) {
+    for await (const rec of getRecommendationsV3({ resourceId: SEDAI_EXECUTE_RESOURCE_ID })) {
       const status = rec.status;
       console.log(`  [${new Date().toISOString()}] Status: ${status}`);
 

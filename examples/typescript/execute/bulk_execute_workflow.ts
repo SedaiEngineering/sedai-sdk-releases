@@ -17,7 +17,7 @@
  *
  * Run:
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   PROVIDER_RESOURCE_IDS='/subscriptions/.../virtualMachines/vm-1,/subscriptions/.../virtualMachines/vm-2' \
+ *   SEDAI_PROVIDER_RESOURCE_IDS='/subscriptions/.../virtualMachines/vm-1,/subscriptions/.../virtualMachines/vm-2' \
  *   npx ts-node -P examples/tsconfig.json examples/execute/bulk_execute_workflow.ts
  */
 
@@ -35,7 +35,7 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-const PROVIDER_RESOURCE_IDS = (process.env.PROVIDER_RESOURCE_IDS ?? '')
+const SEDAI_PROVIDER_RESOURCE_IDS = (process.env.SEDAI_PROVIDER_RESOURCE_IDS ?? '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
@@ -45,16 +45,16 @@ const POLL_INTERVAL_MS = 5000;
 const MAX_POLLS = 24; // 2 minutes
 
 async function main() {
-  if (PROVIDER_RESOURCE_IDS.length === 0) {
-    console.error('Set PROVIDER_RESOURCE_IDS to a comma-separated list of Azure resource IDs.');
+  if (SEDAI_PROVIDER_RESOURCE_IDS.length === 0) {
+    console.error('Set SEDAI_PROVIDER_RESOURCE_IDS to a comma-separated list of Azure resource IDs.');
     process.exit(1);
   }
 
   // --- Step 1: Pull opportunities in bulk, by Azure resource ID ---
-  console.log(`\nFetching opportunities for ${PROVIDER_RESOURCE_IDS.length} resource(s)...`);
+  console.log(`\nFetching opportunities for ${SEDAI_PROVIDER_RESOURCE_IDS.length} resource(s)...`);
   const resourceIds: string[] = [];
   const providerIdByResourceId = new Map<string, string>();
-  for await (const opp of getOpportunitiesForResources(PROVIDER_RESOURCE_IDS)) {
+  for await (const opp of getOpportunitiesForResources(SEDAI_PROVIDER_RESOURCE_IDS)) {
     if (opp.opportunityStatus === 'OPPORTUNITY_AVAILABLE') {
       resourceIds.push(opp.sedaiResourceId);
       // providerResourceId comes back directly alongside sedaiResourceId — capture it now so
