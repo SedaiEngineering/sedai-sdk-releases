@@ -135,7 +135,14 @@ configure({
 
 ## Key Concepts
 
-**`resourceId`** — Sedai's internal UUID for a cloud resource (e.g. `"res_abc123"`). It is different from your cloud provider's resource identifier (`providerResourceId`, e.g. an EC2 instance ID like `"i-0abc123"`). Use `getAllAccounts()` or `searchAccountsByName()` to discover account IDs, then use functions like `getRecommendations({ accountIds: [accountId] })` or `getResourceOptimizations({ accountId })` to iterate resources and find their `resourceId` values.
+**`resourceId`** — Sedai's internal identifier for a cloud resource. It is **not** an opaque UUID: it is a slash-delimited composite path that embeds the account ID, region, and resource kind.
+
+```
+tjab5onf/eastus2/Instance/23b2be14-6af4-47c9-937e-ccd5dfbcb307/US6WVDCP200253
+└─ account  └─ region  └─ kind  └─ uuid                        └─ resource name
+```
+
+Treat it as an opaque string — do not parse or validate it with a pattern of your own, since the shape is not part of any published contract. It is different from your cloud provider's resource identifier (`providerResourceId`, e.g. an EC2 instance ID like `"i-0abc123"`, or a full Azure resource path). Use `getAllAccounts()` or `searchAccountsByName()` to discover account IDs, then functions like `getRecommendations({ accountIds: [accountId] })` or `getResourceOptimizations({ accountId })` to iterate resources and read their real `resourceId` values.
 
 **`configure()` is a global singleton** — call it once at startup. All SDK functions share the same connection. If you need to connect to multiple Sedai environments in the same process, create separate Node.js processes.
 
@@ -705,6 +712,21 @@ import { getCloudProviderIds } from 'sedai-sdk';
 const map = await getCloudProviderIds(['sedai-resource-id-1', 'sedai-resource-id-2']);
 console.log(map['sedai-resource-id-1']); // e.g. "/subscriptions/.../virtualMachines/vm-web-01"
 ```
+
+> **Unresolved IDs are echoed back, not omitted.** An ID the backend doesn't recognise comes back
+> mapped to itself, so every input key is always present and checking for a missing key never
+> detects a failed lookup. Compare the value against the key instead:
+>
+> ```typescript
+> import { getCloudProviderIds } from 'sedai-sdk';
+>
+> const ids = ['sedai-resource-id-1', 'sedai-resource-id-2'];
+> const map = await getCloudProviderIds(ids);
+> const unresolved = ids.filter(id => map[id] === id);
+> ```
+>
+> Kubernetes resources are the exception — they have no separate provider ID, so theirs legitimately
+> equals the Sedai resource ID and this test will report them as unresolved.
 
 #### Transaction-Level Bulk Execution Tracking
 

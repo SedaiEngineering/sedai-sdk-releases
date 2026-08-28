@@ -6,6 +6,22 @@ For the Python SDK, see [CHANGELOG.md](./CHANGELOG.md).
 > Version numbers start at 1.1.0. Earlier TypeScript releases all shipped as `1.0.0` and are not
 > listed here.
 
+# 1.2.4 - 2026-08-28
+
+### Fixed
+
+- **`getCloudProviderIds()` returns unresolved IDs mapped to themselves, not omitted.** Every ID you pass is always present in the result, so checking for a missing key never detects a failed lookup. To find unresolved ones, compare each value against its key: `ids.filter(id => map[id] === id)`. Kubernetes resources are the exception — they have no separate provider ID, so theirs legitimately equals the Sedai resource ID. This is existing backend behaviour; only the documentation changed.
+- **`resourceId` is not an opaque UUID.** It was documented as `res_abc123`. Real IDs are slash-delimited composite paths that embed the account, region and resource kind — e.g. `tjab5onf/eastus2/Instance/23b2be14-.../US6WVDCP200253`. Any validation pattern written from the old documented shape would reject every real ID. Treat the value as opaque; the structure is not a published contract.
+
+### Changed
+
+- **Source maps are no longer published.** The package shipped 26 `.js.map` files whose sources pointed at a `src/` directory that is not included, so stack traces referenced paths that do not exist. The tarball drops from 83 KB to 56 KB. Compiled `.js` and `.d.ts` are unaffected.
+
+### Added
+
+- **[REFERENCE-typescript.md](./REFERENCE-typescript.md)** — the SDK's full reference (key concepts, typical workflow, authentication, pagination, error handling, and every function by area) is now published in this repo. It previously shipped only inside the package at `node_modules/sedai-sdk/README.md`, so nothing linked to it and it was invisible until after installing.
+- **A `401` entry in the README's [Troubleshooting](./README.md#troubleshooting) section**, including how to read the JWT `exp` claim to tell an expired token from a wrong one without calling the API.
+
 # 1.2.3 - 2026-08-28
 
 ### Fixed

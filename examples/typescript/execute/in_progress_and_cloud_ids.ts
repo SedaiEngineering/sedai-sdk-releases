@@ -65,8 +65,20 @@ async function main() {
   // --- Resolve known Sedai resource IDs back to their cloud provider IDs ---
   console.log('\n--- Resolving Sedai IDs to cloud provider IDs ---');
   const providerIds = await getCloudProviderIds(KNOWN_SEDAI_RESOURCE_IDS);
+
+  // Unresolved IDs are echoed back mapped to themselves, not omitted — every input key is always
+  // present, so `providerIds[id] ?? '(not found)'` can never fire. Compare value against key.
   for (const id of KNOWN_SEDAI_RESOURCE_IDS) {
-    console.log(`${id} → ${providerIds[id] ?? '(not found)'}`);
+    const resolved = providerIds[id];
+    const unresolved = resolved === id;
+    console.log(`${id} → ${unresolved ? '(not resolved — echoed back)' : resolved}`);
+  }
+
+  // Note: Kubernetes resources have no separate provider ID, so theirs legitimately equals the
+  // Sedai resource ID. This test reports those as unresolved — exclude them if you have any.
+  const unresolvedIds = KNOWN_SEDAI_RESOURCE_IDS.filter(id => providerIds[id] === id);
+  if (unresolvedIds.length > 0) {
+    console.log(`\n  ${unresolvedIds.length} of ${KNOWN_SEDAI_RESOURCE_IDS.length} did not resolve.`);
   }
 }
 
