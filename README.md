@@ -92,3 +92,8 @@ main();
 
 **Full API reference** — type signatures, all functions, pagination, and examples:
 https://sedaiengineering.github.io/sedai-sdk-typescript/
+
+**More examples** — see [examples/typescript](./examples/typescript) for runnable examples
+covering accounts, optimizations, settings, and bulk execution (including transaction-level
+tracking — [examples/typescript/execute/bulk_execution_transaction_tracking.ts](./examples/typescript/execute/bulk_execution_transaction_tracking.ts)).
+Each file documents its own env vars and run command at the top.
