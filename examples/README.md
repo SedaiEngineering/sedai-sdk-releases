@@ -79,7 +79,9 @@ A ready-to-use [`typescript/tsconfig.json`](./typescript/tsconfig.json) and
 | [`settings/group_settings.ts`](./typescript/settings/group_settings.ts) | `getGroupSettings()` / `updateGroupSettings()` |
 | [`settings/resource_settings.ts`](./typescript/settings/resource_settings.ts) | `getResourceSettings()` / `updateResourceSettings()` |
 
-**Full API reference:** https://sedaiengineering.github.io/sedai-sdk-typescript/
+**Full SDK reference:** [REFERENCE-typescript.md](../REFERENCE-typescript.md) — key concepts,
+pagination, error handling, and every function by area.
+**Generated API docs:** https://sedaiengineering.github.io/sedai-sdk-typescript/
 
 ---
 
