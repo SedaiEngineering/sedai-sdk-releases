@@ -103,11 +103,16 @@ main();
 
     npx ts-node exercise.ts
 
+**Full SDK reference** — [REFERENCE-typescript.md](./REFERENCE-typescript.md). Key concepts, the
+typical workflow, authentication, pagination, error handling, and every function by area. This is
+the same document that ships inside the package as `node_modules/sedai-sdk/README.md`; read it here
+without installing first.
+
+**Generated API docs** — type signatures for every export:
+https://sedaiengineering.github.io/sedai-sdk-typescript/
+
 **What changed in this release** — see the
 [TypeScript / JavaScript SDK changelog](./CHANGELOG-typescript.md).
-
-**Full API reference** — type signatures, all functions, pagination, and examples:
-https://sedaiengineering.github.io/sedai-sdk-typescript/
 
 **More examples** — see [examples/typescript](./examples/typescript) for runnable examples
 covering accounts, optimizations, settings, and bulk execution (including transaction-level
