@@ -18,7 +18,22 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-const PROVIDER_RESOURCE_ID = 'i-0abc1234567890def';
+/** Fail immediately on a missing ID rather than sending a placeholder to the API, which
+ *  returns an empty result set and looks indistinguishable from "no data". */
+function requireEnv(name: string, hint: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing ${name}.\n  ${hint}`);
+    process.exit(1);
+  }
+  return value;
+}
+
+// A native cloud provider ID — e.g. 'i-0abc1234567890def' (AWS EC2) or an Azure resource path.
+const PROVIDER_RESOURCE_ID = requireEnv(
+  'SEDAI_PROVIDER_RESOURCE_ID',
+  'Use a providerResourceId from: npx ts-node -P tsconfig.json optimizations/bulk_opportunities.ts',
+);
 
 async function main() {
   const opp = await getOpportunityForResource(PROVIDER_RESOURCE_ID);

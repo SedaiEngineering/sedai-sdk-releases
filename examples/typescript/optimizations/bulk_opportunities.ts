@@ -21,16 +21,30 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-// Cloud provider resource IDs in their native format:
-//   AWS EC2:   'i-0abc1234567890def'
-//   AWS EBS:   'vol-0abc1234567890def'
-//   Azure VM:  '/subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.Compute/virtualMachines/{name}'
-const RESOURCE_IDS = [
-  'i-0abc1234567890def',
-  'vol-0abc1234567890def',
-];
+/** Fail immediately on a missing ID rather than sending a placeholder to the API, which
+ *  returns an empty result set and looks indistinguishable from "no data". */
+function requireEnv(name: string, hint: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing ${name}.\n  ${hint}`);
+    process.exit(1);
+  }
+  return value;
+}
 
-const ACCOUNT_ID = 'your-account-id';
+// Comma-separated cloud provider resource IDs in their native format:
+//   AWS EC2:   i-0abc1234567890def
+//   AWS EBS:   vol-0abc1234567890def
+//   Azure VM:  /subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.Compute/virtualMachines/{name}
+const RESOURCE_IDS = requireEnv(
+  'SEDAI_PROVIDER_RESOURCE_IDS',
+  'Comma-separated native cloud IDs, e.g. i-0abc1234567890def,vol-0abc1234567890def',
+).split(',').map(s => s.trim()).filter(Boolean);
+
+const ACCOUNT_ID = requireEnv(
+  'SEDAI_ACCOUNT_ID',
+  'Find one with: npx ts-node -P tsconfig.json accounts/discover_accounts.ts',
+);
 
 async function main() {
 

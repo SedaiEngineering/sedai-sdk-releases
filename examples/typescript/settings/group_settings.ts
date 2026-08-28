@@ -22,7 +22,18 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-const GROUP_ID = 'your-group-id';
+/** Fail immediately on a missing ID rather than sending a placeholder to the API, which
+ *  returns an empty result set and looks indistinguishable from "no data". */
+function requireEnv(name: string, hint: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing ${name}.\n  ${hint}`);
+    process.exit(1);
+  }
+  return value;
+}
+
+const GROUP_ID = requireEnv('SEDAI_GROUP_ID', 'Find one with getAllGroups() against your tenant.');
 
 async function main() {
 

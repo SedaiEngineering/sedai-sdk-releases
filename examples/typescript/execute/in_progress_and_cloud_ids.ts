@@ -17,7 +17,21 @@ configure({
 });
 
 // Replace with resource IDs you already know, if you want to try the cloud-provider-ID lookup.
-const KNOWN_SEDAI_RESOURCE_IDS = ['sedai-resource-id-1', 'sedai-resource-id-2'];
+/** Fail immediately on a missing ID rather than sending a placeholder to the API, which
+ *  returns an empty result set and looks indistinguishable from "no data". */
+function requireEnv(name: string, hint: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing ${name}.\n  ${hint}`);
+    process.exit(1);
+  }
+  return value;
+}
+
+const KNOWN_SEDAI_RESOURCE_IDS = requireEnv(
+  'SEDAI_RESOURCE_IDS',
+  'Comma-separated sedaiResourceIds from: npx ts-node -P tsconfig.json optimizations/bulk_opportunities.ts',
+).split(',').map(s => s.trim()).filter(Boolean);
 
 async function main() {
   // --- Everything in progress right now, tenant-wide (no filter) ---

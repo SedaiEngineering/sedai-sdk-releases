@@ -3,6 +3,7 @@
  *
  * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
+ *   SEDAI_ACCOUNT_ID=<account-id> \
  *   npx ts-node -P tsconfig.json optimizations/recommendations.ts
  */
 
@@ -13,7 +14,21 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-const ACCOUNT_ID = 'your-account-id';
+/** Fail immediately on a missing ID rather than sending a placeholder to the API, which
+ *  returns an empty result set and looks indistinguishable from "no data". */
+function requireEnv(name: string, hint: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing ${name}.\n  ${hint}`);
+    process.exit(1);
+  }
+  return value;
+}
+
+const ACCOUNT_ID = requireEnv(
+  'SEDAI_ACCOUNT_ID',
+  'Find one with: npx ts-node -P tsconfig.json accounts/discover_accounts.ts',
+);
 
 async function main() {
 
