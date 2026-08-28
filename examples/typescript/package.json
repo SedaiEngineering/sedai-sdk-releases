@@ -1,0 +1,17 @@
+{
+  "name": "sedai-sdk-typescript-examples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Runnable examples for the Sedai TypeScript/JavaScript SDK. Run `npm install` here, then `npx ts-node -P tsconfig.json <example>.ts`.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "sedai-sdk": "https://github.com/SedaiEngineering/sedai-sdk-releases/raw/main/sedai-sdk-typescript-latest.tgz"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}

@@ -4,9 +4,9 @@
  * Run this first to find your Sedai account ID. You'll need it for most
  * other SDK calls (getOpportunitiesForResources, getRecommendationsV3, etc.)
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/accounts/discover_accounts.ts
+ *   npx ts-node -P tsconfig.json accounts/discover_accounts.ts
  */
 
 import { configure, getAllAccounts, searchAccountsByName } from 'sedai-sdk';

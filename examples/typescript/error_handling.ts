@@ -12,9 +12,9 @@
  * The SDK never signals failure by returning false, null, or an empty array. If a call returns,
  * it succeeded. That means you never have to inspect a result to find out whether it worked.
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/error_handling.ts
+ *   npx ts-node -P tsconfig.json error_handling.ts
  */
 
 import {

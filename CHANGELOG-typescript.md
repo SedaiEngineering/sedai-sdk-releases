@@ -6,6 +6,14 @@ For the Python SDK, see [CHANGELOG.md](./CHANGELOG.md).
 > Version numbers start at 1.1.0. Earlier TypeScript releases all shipped as `1.0.0` and are not
 > listed here.
 
+# 1.2.3 - 2026-08-28
+
+### Fixed
+
+- **`start` in `PaginationConfig` is a 1-based page number, not a record offset.** The documentation said the opposite, and advised passing `start: 50` with `pageSize: 50` to reach page 2. That actually requests **page 50** — record 2,450 — and returns plausible-looking data from the wrong part of the result set **with no error**. If you followed the old guidance, your offsets were multiplied by `pageSize`. To start at page 2, pass `start: 2`, whatever `pageSize` is. `numPages` is likewise a count of pages, not records.
+- **The clone-and-run flow for examples now works.** v1.2.2 moved the examples out of the npm package and pointed you at this repo, but `examples/typescript/` had no `package.json`, so `sedai-sdk` never resolved and every example failed with `TS2307`. That directory is now a self-contained npm project — `npm install` there is all you need, and it pins `typescript@5` for you.
+- **Example run commands now use paths that exist.** Every example header printed `npx ts-node -P examples/tsconfig.json examples/<file>` — paths from the SDK's own repo layout, not this one. Commands are now relative to `examples/typescript/`, and each header says to run from there.
+
 # 1.2.2 - 2026-08-28
 
 ### Changed
@@ -14,6 +22,7 @@ For the Python SDK, see [CHANGELOG.md](./CHANGELOG.md).
 
       git clone https://github.com/SedaiEngineering/sedai-sdk-releases.git
       cd sedai-sdk-releases/examples/typescript
+      npm install
 
   *Why:* the bundled copy carried a `tsconfig.json` written for the SDK's own build, mapping `sedai-sdk` to a relative `../dist` path that does not exist inside `node_modules`. It could never compile where it was shipped. Keeping a single copy in this repo removes the duplication that let that go unnoticed. The examples themselves are unchanged and the tarball is smaller as a result.
 - **Example environment variables now all use the `SEDAI_` prefix.** Rename these in any scripts or CI that run the examples:

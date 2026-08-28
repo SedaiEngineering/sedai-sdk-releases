@@ -1,9 +1,9 @@
 /**
  * Single resource opportunity — getOpportunityForResource()
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/optimizations/individual_resource_opportunity.ts
+ *   npx ts-node -P tsconfig.json optimizations/individual_resource_opportunity.ts
  */
 
 import {

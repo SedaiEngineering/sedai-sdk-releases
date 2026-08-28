@@ -1,9 +1,9 @@
 /**
  * Group settings — getGroupSettings() / updateGroupSettings()
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/settings/group_settings.ts
+ *   npx ts-node -P tsconfig.json settings/group_settings.ts
  *
  * Note: updateGroupSettings() requires an admin-role API key.
  * Note: Call initializeGroupSettings(groupId) once after creating a new group

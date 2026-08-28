@@ -20,15 +20,15 @@
  * considerably longer when a maintenance window is involved. Size your timeout for that, not for
  * a quick demo — see POLL_TIMEOUT_MS below.
  *
- * Run:
+ * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
  *   SEDAI_RESOURCE_IDS='sedai-resource-id-1,sedai-resource-id-2' \
- *   npx ts-node -P examples/tsconfig.json examples/execute/bulk_execution_transaction_tracking.ts
+ *   npx ts-node -P tsconfig.json execute/bulk_execution_transaction_tracking.ts
  *
  * Or with native cloud provider IDs:
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
  *   SEDAI_PROVIDER_RESOURCE_IDS='/subscriptions/.../virtualMachines/vm-1,i-0abc1234567890def' \
- *   npx ts-node -P examples/tsconfig.json examples/execute/bulk_execution_transaction_tracking.ts
+ *   npx ts-node -P tsconfig.json execute/bulk_execution_transaction_tracking.ts
  */
 
 import {

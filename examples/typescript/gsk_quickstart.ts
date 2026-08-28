@@ -7,14 +7,14 @@
  *   3. Execute an optimization on a chosen resource
  *   4. Poll until SUCCESSFUL or FAILED
  *
- * Run (dry run — no execution):
+ * Run (from the examples directory, after `npm install`) — dry run, no execution:
  *   SEDAI_BASE_URL=https://gsk.sedai.app SEDAI_API_TOKEN=your-token \
- *   npx ts-node -P examples/tsconfig.json examples/gsk_quickstart.ts
+ *   npx ts-node -P tsconfig.json gsk_quickstart.ts
  *
- * Run (live execute on a specific resource):
+ * Run (from the examples directory, after `npm install`) — live execute on a specific resource:
  *   SEDAI_BASE_URL=https://gsk.sedai.app SEDAI_API_TOKEN=your-token \
  *   SEDAI_EXECUTE_RESOURCE_ID=<sedaiResourceId> \
- *   npx ts-node -P examples/tsconfig.json examples/gsk_quickstart.ts
+ *   npx ts-node -P tsconfig.json gsk_quickstart.ts
  *
  * ⚠️  WARNING: Setting SEDAI_EXECUTE_RESOURCE_ID triggers a real optimization.
  * Only use a resource you have confirmed is safe to change.
