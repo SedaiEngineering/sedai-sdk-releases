@@ -1,3 +1,7 @@
+See [CHANGELOG.md](./CHANGELOG.md) for what's new in each release.
+
+---
+
 ## Python SDK
 
 Create a virtual environment and activate it:
