@@ -15,7 +15,21 @@ configure({
   apiToken: process.env.SEDAI_API_TOKEN ?? 'your-api-token',
 });
 
-const RESOURCE_ID = 'sedai-resource-id';
+/** Fail immediately on a missing ID rather than sending a placeholder to the API, which
+ *  returns an empty result set and looks indistinguishable from "no data". */
+function requireEnv(name: string, hint: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing ${name}.\n  ${hint}`);
+    process.exit(1);
+  }
+  return value;
+}
+
+const RESOURCE_ID = requireEnv(
+  'SEDAI_RESOURCE_ID',
+  'Use a sedaiResourceId from: npx ts-node -P tsconfig.json optimizations/bulk_opportunities.ts',
+);
 
 async function main() {
 

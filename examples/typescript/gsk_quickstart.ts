@@ -9,10 +9,12 @@
  *
  * Run (from the examples directory, after `npm install`) — dry run, no execution:
  *   SEDAI_BASE_URL=https://gsk.sedai.app SEDAI_API_TOKEN=your-token \
+ *   SEDAI_ACCOUNT_ID=<account-id> \
  *   npx ts-node -P tsconfig.json gsk_quickstart.ts
  *
  * Run (from the examples directory, after `npm install`) — live execute on a specific resource:
  *   SEDAI_BASE_URL=https://gsk.sedai.app SEDAI_API_TOKEN=your-token \
+ *   SEDAI_ACCOUNT_ID=<account-id> \
  *   SEDAI_EXECUTE_RESOURCE_ID=<sedaiResourceId> \
  *   npx ts-node -P tsconfig.json gsk_quickstart.ts
  *
@@ -38,8 +40,11 @@ configure({
 // Leave unset to run Steps 1 and 2 only (safe, read-only).
 const SEDAI_EXECUTE_RESOURCE_ID = process.env.SEDAI_EXECUTE_RESOURCE_ID ?? '';
 
-const POLL_INTERVAL_MS = 5000;
-const MAX_POLLS = 24; // 2 minutes
+// Real optimizations are slow — an observed Azure disk took ~25 minutes end to end, and a
+// resource waiting on a maintenance window can take considerably longer. Size the timeout for
+// that, not for a quick demo.
+const POLL_INTERVAL_MS = 15_000;
+const MAX_POLLS = 160; // 40 minutes
 const TERMINAL = new Set(['SUCCESSFUL', 'FAILED', 'USER_REJECTED', 'UNSAFE_TO_ACT', 'EXPIRED']);
 
 async function main() {
@@ -56,10 +61,28 @@ async function main() {
     console.log(`  ${acc.name.padEnd(40)} id: ${acc.id}  provider: ${acc.accountDetails.cloudProvider}`);
   }
 
-  // Pick the account you want to work with and paste its id below, or
-  // filter by name: accounts.find(a => a.name === 'my-azure-account')
-  const account = accounts[0];
-  if (!account) { console.error('No accounts found.'); return; }
+  if (accounts.length === 0) {
+    console.error('No accounts found in this tenant.');
+    process.exit(1);
+  }
+
+  // Choose deliberately. Large tenants have thousands of accounts, most of which hold no VMs —
+  // picking accounts[0] will usually land on one with nothing to optimize and make the SDK look
+  // like it returned no data.
+  const wanted = process.env.SEDAI_ACCOUNT_ID;
+  if (!wanted) {
+    console.error(
+      `\nSet SEDAI_ACCOUNT_ID to one of the ${accounts.length} account IDs listed above, then re-run.\n` +
+      '  Pick an account you know has VMs — most accounts in a large tenant have none.',
+    );
+    process.exit(1);
+  }
+
+  const account = accounts.find(a => a.id === wanted);
+  if (!account) {
+    console.error(`\nAccount ${wanted} not found in this tenant. Pick an id from the list above.`);
+    process.exit(1);
+  }
   console.log(`\nUsing: ${account.name} (${account.id})`);
 
   // ---------------------------------------------------------------------------
@@ -95,7 +118,9 @@ async function main() {
 
   if (!opportunities.length) {
     console.log('  No CO_PILOT VM opportunities found for this account.');
-    console.log('  Try configModes: [\'AUTO\', \'DATA_PILOT\', \'CO_PILOT\'] to see all modes.');
+    console.log('  This usually means the account holds no VMs — try a different SEDAI_ACCOUNT_ID.');
+    console.log('  (Widening configModes will not help: this step also filters to resourceType');
+    console.log('   \'vm\', and the extra modes mostly return \'base\' rows that get filtered out.)');
     return;
   }
 
@@ -158,7 +183,10 @@ async function main() {
     }
   }
 
-  console.log('\n⚠ Timed out — check the Sedai UI for current status.');
+  console.log('\n⚠ Gave up waiting after 40 minutes — the optimization is STILL RUNNING, not failed.');
+  console.log(`  Re-check later with getRecommendationsV3({ resourceId: '${SEDAI_EXECUTE_RESOURCE_ID}' }),`);
+  console.log('  or look it up in the Sedai UI.');
+  process.exitCode = 1;
 }
 
 main().catch(err => {
