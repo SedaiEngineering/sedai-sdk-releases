@@ -80,8 +80,16 @@ async function main() {
       console.error('No cloud accounts are set up in this Sedai tenant yet.');
       return;
     }
-    const accountId = accounts[0].id;
-    console.log('Account:', accounts[0].name, accountId);
+
+    // Choose the account deliberately. Most accounts in a large tenant have nothing to
+    // optimize, so falling back to accounts[0] will often return an empty result — the SDK
+    // is working, it just picked an account with no data. Set SEDAI_ACCOUNT_ID to choose.
+    const accountId = process.env.SEDAI_ACCOUNT_ID ?? accounts[0].id;
+    const account = accounts.find(a => a.id === accountId) ?? accounts[0];
+    console.log('Account:', account.name, account.id);
+    if (!process.env.SEDAI_ACCOUNT_ID) {
+      console.log(`Empty results? Set SEDAI_ACCOUNT_ID to another of the ${accounts.length} accounts.`);
+    }
 
     // Key functions return a PageIterator<T> — iterate with for await
     for await (const rec of getRecommendations({ accountIds: [accountId] })) {
