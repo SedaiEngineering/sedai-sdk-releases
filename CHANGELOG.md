@@ -3,6 +3,16 @@
 > Entries are labeled by SDK. Unlabeled entries below this point are the Python SDK's history —
 > the TypeScript SDK didn't bump version numbers before 1.1.0, so it has no earlier entries here.
 
+# 1.2.1 - 2026-08-28 (TypeScript SDK)
+
+### Fixed
+
+- `BulkExecutionSubmission.transactionId` is now typed `string | null`. When none of the submitted resources are recognized, the API returns `submitted: 0` and no transaction ID — there is nothing to poll. Check for `null` before calling `getExecutionStatus()`/`getExecutionItems()`. Type-only change; runtime behaviour is unchanged from 1.2.0.
+
+### Added
+
+- Runnable TypeScript examples under [`examples/typescript/`](./examples/typescript) — accounts, optimizations, settings, and bulk execution, including transaction-level tracking. Each file documents its own environment variables and run command.
+
 # 1.2.0 - 2026-08-28 (TypeScript SDK)
 
 ### Added
