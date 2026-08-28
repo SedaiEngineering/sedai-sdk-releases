@@ -30,6 +30,13 @@ npx ts-node examples/typescript/gsk_quickstart.ts
 
 A ready-to-use [`typescript/tsconfig.json`](./typescript/tsconfig.json) is included.
 
+### Start here
+
+| Example | What it shows |
+|---|---|
+| [`gsk_quickstart.ts`](./typescript/gsk_quickstart.ts) | The core integration flow end to end |
+| [`error_handling.ts`](./typescript/error_handling.ts) | What the SDK throws and what it retries for you — read before building anything that runs unattended |
+
 ### Accounts
 
 | Example | What it shows |
@@ -55,7 +62,7 @@ A ready-to-use [`typescript/tsconfig.json`](./typescript/tsconfig.json) is inclu
 |---|---|
 | [`execute/execute_opportunity.ts`](./typescript/execute/execute_opportunity.ts) | Execute one optimization and track its status — the core workflow |
 | [`execute/bulk_execute_workflow.ts`](./typescript/execute/bulk_execute_workflow.ts) | Execute a batch and track it by polling each resource |
-| [`execute/bulk_execution_transaction_tracking.ts`](./typescript/execute/bulk_execution_transaction_tracking.ts) | Execute a batch and track the whole thing by a single transaction ID — poll one ID instead of many |
+| [`execute/bulk_execution_transaction_tracking.ts`](./typescript/execute/bulk_execution_transaction_tracking.ts) | Execute a batch and track the whole thing by a single transaction ID — poll one ID instead of many. Accepts native Azure/AWS/GCP resource IDs directly, with no lookup step |
 | [`execute/in_progress_and_cloud_ids.ts`](./typescript/execute/in_progress_and_cloud_ids.ts) | Read-only: list in-progress executions, map Sedai resource IDs to cloud provider IDs |
 
 ### Settings
