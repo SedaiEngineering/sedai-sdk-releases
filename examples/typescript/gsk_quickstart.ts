@@ -40,11 +40,12 @@ configure({
 // Leave unset to run Steps 1 and 2 only (safe, read-only).
 const SEDAI_EXECUTE_RESOURCE_ID = process.env.SEDAI_EXECUTE_RESOURCE_ID ?? '';
 
-// Real optimizations are slow — an observed Azure disk took ~25 minutes end to end, and a
-// resource waiting on a maintenance window can take considerably longer. Size the timeout for
-// that, not for a quick demo.
-const POLL_INTERVAL_MS = 15_000;
-const MAX_POLLS = 160; // 40 minutes
+// Timings from the backend team, 2026-08-29: VMs and disks finish in ~20 minutes, Kubernetes
+// resources can take up to 8 hours, and a resource with missing metrics stays IN_QUEUE
+// indefinitely. 30s rather than 15s because the status query is expensive on a large tenant.
+// Default covers VMs and disks; raise SEDAI_POLL_TIMEOUT_MIN for Kubernetes.
+const POLL_INTERVAL_MS = 30_000;
+const MAX_POLLS = Math.ceil((Number(process.env.SEDAI_POLL_TIMEOUT_MIN ?? 45) * 60_000) / POLL_INTERVAL_MS);
 const TERMINAL = new Set(['SUCCESSFUL', 'FAILED', 'USER_REJECTED', 'UNSAFE_TO_ACT', 'EXPIRED']);
 
 async function main() {
@@ -183,7 +184,9 @@ async function main() {
     }
   }
 
-  console.log('\n⚠ Gave up waiting after 40 minutes — the optimization is STILL RUNNING, not failed.');
+  const waitedMin = Math.round((MAX_POLLS * POLL_INTERVAL_MS) / 60_000);
+  console.log(`\n⚠ Gave up waiting after ${waitedMin} minutes — the optimization is STILL RUNNING, not failed.`);
+  console.log('  Kubernetes resources can take up to 8 hours — raise SEDAI_POLL_TIMEOUT_MIN for those.');
   console.log(`  Re-check later with getRecommendationsV3({ resourceId: '${SEDAI_EXECUTE_RESOURCE_ID}' }),`);
   console.log('  or look it up in the Sedai UI.');
   process.exitCode = 1;
