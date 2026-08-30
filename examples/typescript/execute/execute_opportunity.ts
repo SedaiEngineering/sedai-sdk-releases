@@ -37,8 +37,12 @@ configure({
 });
 
 const SEDAI_RESOURCE_ID = process.env.SEDAI_RESOURCE_ID ?? '';
-const POLL_INTERVAL_MS = 5000;
-const MAX_POLLS = 24; // 2 minutes
+// Timings from the backend team, 2026-08-29: VMs and disks finish in ~20 minutes, Kubernetes
+// resources can take up to 8 hours, and a resource with missing metrics stays IN_QUEUE
+// indefinitely. 30s rather than 15s because the status query is expensive on a large tenant.
+// Default covers VMs and disks; raise SEDAI_POLL_TIMEOUT_MIN for Kubernetes.
+const POLL_INTERVAL_MS = 30_000;
+const MAX_POLLS = Math.ceil((Number(process.env.SEDAI_POLL_TIMEOUT_MIN ?? 45) * 60_000) / POLL_INTERVAL_MS);
 const TERMINAL = new Set(['SUCCESSFUL', 'FAILED', 'USER_REJECTED', 'UNSAFE_TO_ACT', 'EXPIRED']);
 
 async function main() {

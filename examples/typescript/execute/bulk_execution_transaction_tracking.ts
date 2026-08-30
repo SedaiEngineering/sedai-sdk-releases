@@ -15,10 +15,16 @@
  * outcomes against the same identifiers you submitted.
  *
  * ── How long this takes ────────────────────────────────────────────────────────────────────
- * Real executions are slow. An observed Azure disk took ~25 minutes to go
- * IN_QUEUE → WAITING → IN_PROGRESS → VALIDATING → SUCCEEDED, and resources can sit in IN_QUEUE
- * considerably longer when a maintenance window is involved. Size your timeout for that, not for
- * a quick demo — see POLL_TIMEOUT_MS below.
+ * Real executions are slow, and how slow depends on the resource type (figures from the backend
+ * team, 2026-08-29):
+ *
+ *   VMs and disks   ~20 minutes. An observed Azure disk took ~25 to go
+ *                   IN_QUEUE → WAITING → IN_PROGRESS → VALIDATING → SUCCEEDED.
+ *   Kubernetes      up to 8 hours to profile.
+ *
+ * A resource whose metrics are missing is a third case: it stays IN_QUEUE indefinitely and is
+ * never picked up until metrics arrive. Polling it will never terminate, so treat a timeout as
+ * "unknown", not "failed" — see POLL_TIMEOUT_MS below.
  *
  * Run (from the examples directory, after `npm install`):
  *   SEDAI_BASE_URL=https://your-org.sedai.app SEDAI_API_TOKEN=your-token \
@@ -54,10 +60,18 @@ const SEDAI_RESOURCE_IDS = splitIds(process.env.SEDAI_RESOURCE_IDS);
 // Submit these directly; no translation to Sedai IDs is needed.
 const SEDAI_PROVIDER_RESOURCE_IDS = splitIds(process.env.SEDAI_PROVIDER_RESOURCE_IDS);
 
-const POLL_INTERVAL_MS = 15_000;
-// 40 minutes. Executions routinely run 25+ minutes; a short timeout will report "still running"
-// on work that would have succeeded. Raise this rather than lower it.
-const POLL_TIMEOUT_MS = 40 * 60 * 1000;
+// Timings below are from Rajat (backend), 2026-08-29.
+//
+//   30s interval — 15s is too aggressive; the status query is expensive on a large tenant.
+//   VMs and disks    finish in roughly 20 minutes.
+//   Kubernetes       can take up to 8 HOURS to profile.
+//   Missing metrics  a resource whose metrics are unavailable stays IN_QUEUE indefinitely — it is
+//                    never picked up until metrics arrive, so polling it will never terminate.
+//
+// The default timeout covers VMs and disks with margin. For Kubernetes, raise it:
+//   SEDAI_POLL_TIMEOUT_MIN=480
+const POLL_INTERVAL_MS = 30_000;
+const POLL_TIMEOUT_MS = Number(process.env.SEDAI_POLL_TIMEOUT_MIN ?? 45) * 60 * 1000;
 
 async function main() {
   if (SEDAI_RESOURCE_IDS.length === 0 && SEDAI_PROVIDER_RESOURCE_IDS.length === 0) {
@@ -113,8 +127,13 @@ async function main() {
   // driving a workflow needs to tell them apart before deciding to notify or keep waiting.
   if (!finalStatus) {
     console.warn(
-      `\nTimed out after ${POLL_TIMEOUT_MS / 60000} minutes — the transaction is STILL RUNNING, ` +
+      `\nGave up after ${POLL_TIMEOUT_MS / 60000} minutes — the transaction is STILL RUNNING, ` +
       'not failed.',
+    );
+    console.warn(
+      '  Expected if the batch contains Kubernetes resources (up to 8 hours) — raise\n' +
+      '  SEDAI_POLL_TIMEOUT_MIN and re-run. A resource with missing metrics never leaves\n' +
+      '  IN_QUEUE at all, so polling it would not terminate however long you wait.',
     );
     console.warn(`Resume polling later with transactionId: ${submission.transactionId}`);
     console.log('\nPartial results so far:');
