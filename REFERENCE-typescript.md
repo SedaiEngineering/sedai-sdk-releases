@@ -172,8 +172,16 @@ const accounts = await getAllAccounts();
 if (accounts.length === 0) {
   throw new Error('No cloud accounts are set up in this Sedai tenant yet.');
 }
-const accountId = accounts[0].id;
-console.log('Using account:', accounts[0].name, accountId);
+
+// Choose the account deliberately. Most accounts in a large tenant have nothing to optimize,
+// so falling back to accounts[0] will often return an empty result — the SDK is working, it
+// just picked an account with no data. Set SEDAI_ACCOUNT_ID to choose your own.
+const accountId = process.env.SEDAI_ACCOUNT_ID ?? accounts[0].id;
+const account = accounts.find(a => a.id === accountId) ?? accounts[0];
+console.log('Using account:', account.name, account.id);
+if (!process.env.SEDAI_ACCOUNT_ID) {
+  console.log(`Empty results? Set SEDAI_ACCOUNT_ID to another of the ${accounts.length} accounts above.`);
+}
 
 // 2. Pull recommendations for that account
 for await (const rec of getRecommendations({ accountIds: [accountId] })) {
@@ -195,7 +203,9 @@ for await (const rec of getRecommendations({ accountIds: ['account-id'] })) {
 }
 ```
 
-You can also pass `pageSize` and `start` to control pagination. **`start` is a 1-based page number, not a record offset** — to start at page 2, pass `start: 2` regardless of `pageSize`. The record it lands on is `(start - 1) * pageSize`.
+You can also pass `pageSize` and `start` to control pagination. **`start` is a 0-based page index, not a record offset** — `start: 0` is the first page and `start: 1` is the second, regardless of `pageSize`. The record it lands on is `start * pageSize`, so with `pageSize: 25`, `start: 25` returns record 625 rather than record 25.
+
+`numPages` is a count: `numPages: 1` fetches exactly one page.
 
 ```typescript
 import { getRecommendations } from 'sedai-sdk';
@@ -927,6 +937,24 @@ for (const event of events) {
   console.log(event.updatedTime, event.eventType, event.updatedUser);
 }
 ```
+
+> ⚠️ **Bound these calls with `startTime`/`endTime` on a large tenant.** They fetch the *complete*
+> history — every page is retrieved before the call returns, and there is no way to stop early. One
+> production account carries 131,609 change events; unbounded, that is 2,633 sequential requests and
+> roughly 8 minutes. The endpoint itself responds in under a second, so the cost is almost entirely
+> the number of round trips.
+
+```typescript
+import { getAccountSettingsHistory } from 'sedai-sdk';
+
+const endTime = new Date();
+const startTime = new Date(endTime.getTime() - 24 * 60 * 60 * 1000); // last 24 hours
+
+const recent = await getAccountSettingsHistory('account-id', { startTime, endTime });
+console.log(`${recent.length} change events in the last day`);
+```
+
+Records are returned newest-first, so a narrow window gives you the most recent changes.
 
 ---
 

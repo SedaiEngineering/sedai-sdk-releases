@@ -1,7 +1,7 @@
 /**
  * Execute an optimization and track its status
  *
- * This is the core GSK workflow:
+ * This is the core integration workflow:
  *   1. Find a resource in CO_PILOT mode with an available opportunity
  *   2. Execute the optimization via executeWithCopilot()
  *   3. Poll getRecommendationsV3() to track status until SUCCESSFUL or FAILED
