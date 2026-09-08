@@ -1,7 +1,7 @@
 /**
  * Bulk execute a set of optimizations and track the batch to completion
  *
- * The full GSK workflow:
+ * The full bulk workflow:
  *   1. Pull opportunities in bulk by Azure resource ID (getOpportunitiesForResources)
  *   2. Submit the whole selected batch for optimization (bulkExecuteWithCopilot)
  *   3. Track the batch to completion by polling getRecommendations() filtered to

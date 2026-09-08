@@ -6,6 +6,23 @@ For the Python SDK, see [CHANGELOG.md](./CHANGELOG.md).
 > Version numbers start at 1.1.0. Earlier TypeScript releases all shipped as `1.0.0` and are not
 > listed here.
 
+# 1.2.5 - 2026-09-08
+
+### Fixed
+
+- **`start` in `PaginationConfig` is a 0-based page index. The 1.2.3 entry below said 1-based, and that was wrong.** `start: 0` is the first page, `start: 1` the second; the record it lands on is `start * pageSize`. If you followed the 1.2.3 guidance and passed `start: 2` to reach the second page, you received the **third** — a silently skipped page, with no error. Verified against two unrelated endpoints: `pageable.offset === start * pageSize` on both. Callers who never pass `start` are unaffected. This also applies to `getOperationCompatibility()`, which treated the same field as 1-based and is now consistent with every other paginated function. [REFERENCE-typescript.md](./REFERENCE-typescript.md) has been regenerated and no longer carries the incorrect text.
+- **`numPages` now returns the number of pages you asked for.** It was compared against a 0-based page index rather than a count, so `numPages: N` fetched **N + 1** pages. If you lowered `numPages` to compensate — passing `2` to get 3 pages — remove that adjustment, or you will receive one page fewer than before. This is the one change here that can silently reduce how much data you get back.
+- **`getHealthInfo()` no longer returns nothing when agent statistics are unavailable.** It fetched per-agent message stats concurrently, and a single failure rejected the whole batch, discarding every agent already fetched successfully. On a tenant where `/api/health/agents` returns 279 agents but the stats endpoint responds `403`, the call produced no agent health at all. Failures are now contained per agent: you get every agent, with `messageStats` left `undefined` where stats could not be read. Check that field before using it.
+- **`getAgentInstallationCommand()` throws for agentless accounts — it does not return `null`.** The documentation promised `null` when no command is available. In practice the API responds non-OK for accounts with no agent to install, which raises `APIException`. Handle the throw; a `null` check alone is not enough. Behaviour is unchanged — only the documentation was wrong.
+
+### Changed
+
+- **The settings-history functions now request 50 records per page instead of 20.** `getAccountSettingsHistory()`, `getResourceSettingsHistory()` and `getGroupSettingsHistory()` omitted `pageSize` entirely and took the server default. Same results, roughly 2.6× fewer requests — measured 6.9s against 18.7s on comparable volumes.
+
+### Documented
+
+- **The settings-history functions fetch every page before returning, with no way to stop early.** Pass `startTime`/`endTime` on any tenant with a large change volume. One production account holds 131,609 change events — 2,633 sequential requests, around eight minutes unbounded. Records come back newest-first, so a narrow window gives you the most recent changes.
+
 # 1.2.4 - 2026-08-28
 
 ### Fixed
@@ -27,6 +44,9 @@ For the Python SDK, see [CHANGELOG.md](./CHANGELOG.md).
 ### Fixed
 
 - **`start` in `PaginationConfig` is a 1-based page number, not a record offset.** The documentation said the opposite, and advised passing `start: 50` with `pageSize: 50` to reach page 2. That actually requests **page 50** — record 2,450 — and returns plausible-looking data from the wrong part of the result set **with no error**. If you followed the old guidance, your offsets were multiplied by `pageSize`. To start at page 2, pass `start: 2`, whatever `pageSize` is. `numPages` is likewise a count of pages, not records.
+
+  > ⚠️ **Corrected in [1.2.5](#125---2026-09-08):** `start` is a **0-based page index**, not a 1-based page number. To reach the second page, pass `start: 1` — not `start: 2`, which returns the third. The correction to "record offset" above was right; the replacement was not.
+
 - **The clone-and-run flow for examples now works.** v1.2.2 moved the examples out of the npm package and pointed you at this repo, but `examples/typescript/` had no `package.json`, so `sedai-sdk` never resolved and every example failed with `TS2307`. That directory is now a self-contained npm project — `npm install` there is all you need, and it pins `typescript@5` for you.
 - **Example run commands now use paths that exist.** Every example header printed `npx ts-node -P examples/tsconfig.json examples/<file>` — paths from the SDK's own repo layout, not this one. Commands are now relative to `examples/typescript/`, and each header says to run from there.
 
