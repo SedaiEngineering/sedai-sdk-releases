@@ -1,5 +1,6 @@
 from sedai.health import smart_agent_health
 
+
 def get_agent_health():
     smart_agents = smart_agent_health.get_health_info()
     if not smart_agents:
@@ -22,7 +23,7 @@ def get_agent_health():
             print("Last checked: ", agent.latest_health_check_time)
             for job in agent.job_health_list or []:
                 print()
-                print("Job Id: ",job.job_id)
+                print("Job Id: ", job.job_id)
                 print("Job status: ", job.job_status)
                 print("Status: ", job.is_healthy)
                 print("Last check: ", job.health_check_time)
@@ -36,6 +37,7 @@ def get_agent_health():
                 print("Total executions: ", stat.total_executions)
                 print("Successful executions: ", stat.successful_executions)
                 print("Failed executions: ", stat.failed_executions)
+
 
 if __name__ == '__main__':
     get_agent_health()

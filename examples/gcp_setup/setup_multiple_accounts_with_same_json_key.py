@@ -1,13 +1,16 @@
+import csv
+import os
 import sys
+import time
+
 from sedai import account, credentials, monitoring_provider
-import time, csv, json, os
 
 if len(sys.argv) < 3:
     print("Usage: python setup_multiple_accounts.py <csv_file_path> <json key file path>")
     sys.exit(1)
 
 csv_file_path = sys.argv[1]
-service_account_path=sys.argv[2]
+service_account_path = sys.argv[2]
 
 required_columns = {'Project Name', 'Project ID'}
 
@@ -38,9 +41,7 @@ with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
             with open(service_account_path, 'r') as f:
                 service_account_json = f.read()
 
-            credentials_obj = credentials.GCPServiceAccountJsonCredentials(
-                service_account_json
-            )
+            credentials_obj = credentials.GCPServiceAccountJsonCredentials(service_account_json)
 
             sedai_account_id = account.create_account(
                 name=account_name,
@@ -50,7 +51,7 @@ with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
                 project_id=project_id,
             )
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
             print(f"Error creating GCP account {account_name}: {e}")
             continue
 
@@ -64,10 +65,10 @@ with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
                     project_id=row['Project ID'],
                     credentials=credentials.GKEMonitoringCredentials(
                         service_account_json=service_account_json
-                    )
+                    ),
                 )
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
             print(f"Error creating monitoring provider for {account_name}: {e}")
 
 print("All GCP accounts processed.")

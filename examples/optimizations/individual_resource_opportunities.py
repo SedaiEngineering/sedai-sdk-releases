@@ -1,6 +1,10 @@
 from sedai.optimizations import AzureDiskConfig, EBSVolumeConfig
-from sedai.optimizations.individual_resource_opportunities import get_opportunity_for_resource, VMOpportunityDetails, \
-    VolumeOpportunityDetails
+from sedai.optimizations.individual_resource_opportunities import (
+    VMOpportunityDetails,
+    VolumeOpportunityDetails,
+    get_opportunity_for_resource,
+)
+
 
 def show_common_vm_details(opp):
     print(f"Resource Name : {opp.resource_name}")
@@ -10,8 +14,9 @@ def show_common_vm_details(opp):
     print(f"Monthly cost before the optimization : {opp.pre_ops_monthly_cost}")
     print(f"Monthly cost after the optimization : {opp.post_ops_monthly_cost}")
 
+
 def show_vm_opportunity_details(opp):
-    vm_opp : VMOpportunityDetails = opp
+    vm_opp: VMOpportunityDetails = opp
 
     show_common_vm_details(vm_opp)
     print(f"Current instance type : {vm_opp.current_instance_type}")
@@ -20,7 +25,7 @@ def show_vm_opportunity_details(opp):
     print(f"On-demand pricing after optimization : {vm_opp.post_on_demand_pricing}")
     print(f"Estimated on-demand pricing impact : {vm_opp.estimated_on_demand_pricing_impact}")
 
-    print(f"Instance Configs..")
+    print("Instance Configs..")
     for instance in vm_opp.instance_configs:
         print(f"Instance Names : {[name for name in instance.instance_names]}")
         print(f"Current Type : {instance.current_type}")
@@ -54,6 +59,7 @@ def show_disk_config_details(config):
     print(f"IOPS : {disk_config.iops}")
     print(f"Throughput : {disk_config.throughput}")
 
+
 def show_ebs_volume_config_details(config):
     ebs_config: EBSVolumeConfig = config
 
@@ -64,7 +70,7 @@ def show_ebs_volume_config_details(config):
 
 
 def show_volume_opportunity_details(opp):
-    vol_opp : VolumeOpportunityDetails = opp
+    vol_opp: VolumeOpportunityDetails = opp
 
     show_common_vm_details(vol_opp)
     if isinstance(vol_opp.current_config, AzureDiskConfig):

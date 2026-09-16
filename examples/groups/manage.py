@@ -1,4 +1,3 @@
-import csv
 from sedai import groups
 from sedai import settings as manage_settings
 
@@ -20,8 +19,7 @@ try:
     print(f"Group {group_name} created with status {create_status}")
     group = groups.get_group(group_name)
     print(f"Id of the group is Id {group.groupId}")
-except Exception as e:
-
+except Exception:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
     # Creating failed because group already exists
     # For this example, we will delete the group and recreate it
 
@@ -40,7 +38,6 @@ except Exception as e:
     # Find the recreated group
     group = groups.get_group(group_name)
     print(f"Id of recreated group is {group.groupId}")
-
 
 
 # Details of an existing group

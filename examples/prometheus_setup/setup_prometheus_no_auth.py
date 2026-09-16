@@ -1,8 +1,6 @@
-from sedai import monitoring_provider
-from sedai import credentials
-from sedai import account
-
 import sys
+
+from sedai import account, credentials, monitoring_provider
 
 """
 Collects
@@ -23,16 +21,23 @@ if len(args) != 2:
 account_name = args[0]
 prometheus_endpoint = args[1]
 
-# Check if the account_name exists
+# Check that exactly one account exists with this name. Account names are not unique in Sedai.
 accounts = account.search_accounts_by_name(account_name)
 if len(accounts) == 0:
     print(f"The account with name {account_name} does not exist")
     sys.exit(1)
+if len(accounts) > 1:
+    print(
+        f"More than one account found with name {account_name}. Matching ids: "
+        + ", ".join(a.id for a in accounts)
+    )
+    print("Re-run with an unambiguous account name, or delete the duplicates.")
+    sys.exit(1)
+
+account_id = accounts[0].id
 
 # Create the monitoring provider
 fp_creds = credentials.FederatedPrometheusNoAuth()
-accounts = account.search_accounts_by_name(account_name)
-account_id = accounts[0].id
 
 gke_mp = monitoring_provider.add_federated_prometheus_monitoring(
     account_id=account_id,

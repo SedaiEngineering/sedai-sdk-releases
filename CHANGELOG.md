@@ -3,6 +3,41 @@
 Changes to the `sedai_sdk` Python package, newest first.
 For the TypeScript / JavaScript SDK, see [CHANGELOG-typescript.md](./CHANGELOG-typescript.md).
 
+# 1.3.21 - 2026-09-16
+
+### Changed
+
+- **Breaking.** The Kubernetes and ECS vertical scaling guardrails are now
+  [value + unit objects](https://sedaiengineering.github.io/sedai-sdk-python/sedai/measurement.html)
+  rather than bare numbers, matching the API. A guardrail now carries the unit it is expressed in, so
+  it can be set in cores or millicores, CPU units or vCPUs, bytes or GiB.
+  - `KubeAppSettings`: `verticalScaling_minPerContainerCpu`, `verticalScaling_maxPerContainerCpu`
+    (`K8sCpuValue`), `verticalScaling_minPerContainerMemory`, `verticalScaling_maxPerContainerMemory`
+    (`MemoryValue`) replace the `...InCores` / `...InBytes` fields. The old names stay as deprecated
+    accessors that read and write in cores and bytes, so existing code keeps working.
+  - `ECSAppSettings`: `verticalScaling_minCpu` is now an `ECSCpuValue` and `verticalScaling_minMemory`
+    a `MemoryValue`, where both were previously bare numbers of CPU units and mebibytes. Code that
+    *reads* either field has to be updated; the pre-existing units are available as
+    `verticalScaling_minCpuInCpuUnits` and `verticalScaling_minMemoryInMiB`. Assigning a bare number
+    still works and keeps its old meaning.
+- **Breaking.** Account names are not unique in Sedai.
+  [`account.delete_account`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/account.html#delete_account) and
+  [`account.get_agent_installation_command`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/account.html#get_agent_installation_command)
+  now raise if the name matches no account or more than one, listing the matching ids, where they
+  previously returned `False`. Use the `_by_id` variants when a name may be ambiguous.
+
+### Added
+
+- [`sedai.measurement`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/measurement.html):
+  `MetricUnit`, `K8sCpuValue`, `ECSCpuValue` and `MemoryValue`, with conversion between units.
+- [`account.get_agent_installation_command_by_id`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/account.html#get_agent_installation_command_by_id):
+  the agent installation command for a specific account id, such as the one returned by
+  [`create_account`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/account.html#create_account).
+- [`RDSSettings`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/settings.html#RDSSettings) for RDS instances and clusters, with instance-recommendation guardrails.
+- [`KubeNodePoolSettings`](https://sedaiengineering.github.io/sedai-sdk-python/sedai/settings.html#KubeNodePoolSettings) for Kubernetes node pools, with node-count, disk, and instance-category/family recommendation guardrails.
+- Kubernetes vertical-scaling guardrails: CPU/memory limit-modification and request/limit-ratio controls, plus VPA integration.
+- Account instance-type allow/deny lists via `get`/`add`/`remove_whitelisted_instance_type(s)` and their `blacklisted` equivalents.
+
 # 1.3.20 - 2026-07-07
 
 ### Added
