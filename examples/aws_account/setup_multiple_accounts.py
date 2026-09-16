@@ -1,6 +1,8 @@
+import csv
 import sys
+import time
+
 from sedai import account, credentials, monitoring_provider
-import time, csv
 
 if len(sys.argv) < 2:
     print("Usage: python setup_multiple_accounts.py <csv_file_path>")
@@ -33,17 +35,18 @@ with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
 
             try:
                 credentials_obj = credentials.AwsRoleCredentials(
-                    role_arn=role_arn,
-                    external_id=external_id
+                    role_arn=role_arn, external_id=external_id
                 )
                 sedai_account_id = account.create_account(
                     name=account_name,
                     cloud_provider='AWS',
                     integration_type='AGENTLESS',
-                    credentials=credentials_obj
+                    credentials=credentials_obj,
                 )
-            except Exception as e:
-                print(f"Error processing account create {account_name} with IAM Role {role_arn} and External ID {external_id}: {e}")
+            except Exception as e:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
+                print(
+                    f"Error processing account create {account_name} with IAM Role {role_arn} and External ID {external_id}: {e}"
+                )
 
             try:
                 if sedai_account_id:
@@ -51,11 +54,10 @@ with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
 
                     # Create the monitoring provider
                     monitoring_provider.add_cloudwatch_monitoring(
-                        account_id=sedai_account_id,
-                        use_account_credentials=True
+                        account_id=sedai_account_id, use_account_credentials=True
                     )
 
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
                 print(f"Error creating monitoring provider for {account_name}: {e}")
 
 print("All accounts processed successfully.")

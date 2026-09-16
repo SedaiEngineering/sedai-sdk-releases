@@ -29,7 +29,9 @@ for group_cfg in groups_to_setup:
             parent_id = parent_group.groupId
             print(f"Found parent '{parent_name}' with ID: {parent_id}")
         else:
-            print(f"Warning: Parent group '{parent_name}' not found. Creating/using as top-level group.")
+            print(
+                f"Warning: Parent group '{parent_name}' not found. Creating/using as top-level group."
+            )
 
     # Check if group already exists
     existing = groups.get_group(name)

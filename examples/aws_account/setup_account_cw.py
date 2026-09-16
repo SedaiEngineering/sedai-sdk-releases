@@ -19,22 +19,15 @@ external_id = args[2] if len(args) == 3 else None
 
 # Create the account in Sedai
 
-credentials = credentials.AwsRoleCredentials(
-    role_arn=role_arn,
-    external_id=external_id
-)
+credentials = credentials.AwsRoleCredentials(role_arn=role_arn, external_id=external_id)
 
 sedai_account_id = account.create_account(
-    name=account_name,
-    cloud_provider='AWS',
-    integration_type='AGENTLESS',
-    credentials=credentials)
+    name=account_name, cloud_provider='AWS', integration_type='AGENTLESS', credentials=credentials
+)
 
 print(f"Account {account_name} created successfully with id {sedai_account_id}")
 
 # Create the monitoring provider
 monitoring_provider.add_cloudwatch_monitoring(
-    account_id=sedai_account_id,
-    use_account_credentials=True
+    account_id=sedai_account_id, use_account_credentials=True
 )
-

@@ -1,4 +1,4 @@
-from sedai import pagination, optimizations
+from sedai import optimizations, pagination
 
 # Custom pagination configuration
 pagination_config = pagination.PaginationConfig(page_size=10, num_pages=5)
@@ -40,6 +40,8 @@ while recommendations_iterator.has_next():
 
 # Get all elements in the collection
 resource_id = "resource_id"
-recommendations_iterator = optimizations.get_recommendations(resource_id=resource_id, pagination_config=pagination.DEFAULT_PAGINATION_CONFIG)
+recommendations_iterator = optimizations.get_recommendations(
+    resource_id=resource_id, pagination_config=pagination.DEFAULT_PAGINATION_CONFIG
+)
 recommendations = list(recommendations_iterator)
 print(f"Total recommendations for resource {resource_id}: {len(recommendations)}")

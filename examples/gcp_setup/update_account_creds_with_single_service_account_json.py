@@ -1,11 +1,14 @@
-import sys
 import csv
-import time
 import os
+import sys
+import time
+
 from sedai import account, credentials, monitoring_provider
 
 if len(sys.argv) < 3:
-    print("Usage: python update_account_creds_with_single_service_account_json.py <csv_file_path> <sa_key.json>")
+    print(
+        "Usage: python update_account_creds_with_single_service_account_json.py <csv_file_path> <sa_key.json>"
+    )
     sys.exit(1)
 
 csv_file_path = sys.argv[1]
@@ -19,7 +22,9 @@ with open(service_account_path, 'r') as f:
     service_account_json = f.read()
 
 credentials_obj = credentials.GCPServiceAccountJsonCredentials(service_account_json)
-gke_monitoring_creds = credentials.GKEMonitoringCredentials(service_account_json=service_account_json)
+gke_monitoring_creds = credentials.GKEMonitoringCredentials(
+    service_account_json=service_account_json
+)
 
 required_columns = {'Account ID'}
 
@@ -65,10 +70,12 @@ for i, (account_id, name) in enumerate(account_ids, start=1):
                         account_id=account_id,
                         project_id=provider.get('details', {}).get('projectId'),
                         monitoring_provider_id=provider['id'],
-                        credentials=gke_monitoring_creds
+                        credentials=gke_monitoring_creds,
                     )
                     if mp_result:
-                        print(f"GKE monitoring provider updated (id: {provider['id']}, project: {provider.get('details', {}).get('projectId', '')})")
+                        print(
+                            f"GKE monitoring provider updated (id: {provider['id']}, project: {provider.get('details', {}).get('projectId', '')})"
+                        )
                     else:
                         print(f"Failed to update GKE monitoring provider {provider['id']}")
 
@@ -76,7 +83,7 @@ for i, (account_id, name) in enumerate(account_ids, start=1):
         else:
             print(f"Failed to update credentials for account: {label}")
             failed.append(account_id)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
         print(f"Error updating credentials for account {label}: {e}")
         failed.append(account_id)
 

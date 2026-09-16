@@ -1,8 +1,6 @@
-from sedai import monitoring_provider
-from sedai import credentials
-from sedai import account
-
 import sys
+
+from sedai import account, credentials, monitoring_provider
 
 # Collect the following command line arges:
 # Account Name
@@ -14,7 +12,9 @@ import sys
 args = sys.argv[1:]
 
 if len(args) != 4:
-    print("Usage: python setup_monitoring.py <sedai_account_name> <monitoring_provider_id> <api_key> <application_key>")
+    print(
+        "Usage: python setup_monitoring.py <sedai_account_name> <monitoring_provider_id> <api_key> <application_key>"
+    )
     print("Note: To add new monitoring provider set the <monitoring_provider_id> as None")
     sys.exit(1)
 
@@ -34,7 +34,6 @@ if len(accounts) == 0:
 tc = credentials.DatadogCredentials(
     api_key=api_key,
     application_key=application_key,
-
 )
 
 account_id = accounts[0].id
@@ -42,23 +41,12 @@ account_id = accounts[0].id
 dd_mp = monitoring_provider.add_or_update_datadog_monitoring(
     account_id=account_id,
     credentials=tc,
-    monitoring_provider_id= monitoring_provider_id,
-    app_dimensions=[
-        "destination_workload",
-        "service",
-        "kube_app_name"
-    ],
+    monitoring_provider_id=monitoring_provider_id,
+    app_dimensions=["destination_workload", "service", "kube_app_name"],
     region_dimensions=[],
     az_dimensions=[],
-    namespace_dimensions=[
-        "destination_service_namespace",
-        "namespace",
-        "kube_namespace"
-    ],
-    cluster_dimensions=[
-        "cluster_name",
-        "kube_cluster_name"
-    ],
+    namespace_dimensions=["destination_service_namespace", "namespace", "kube_namespace"],
+    cluster_dimensions=["cluster_name", "kube_cluster_name"],
     env_dimensions=[],
     instance_id_pattern=None,
 )

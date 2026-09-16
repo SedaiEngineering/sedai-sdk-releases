@@ -1,9 +1,14 @@
+import csv
+import json
 import sys
+import time
+
 from sedai import account, credentials
-import time, csv, json
 
 if len(sys.argv) < 3:
-    print("Usage: python update_accounts_with_single_service_principal_creds.py <csv_file_path> <credentials_file_path>")
+    print(
+        "Usage: python update_accounts_with_single_service_principal_creds.py <csv_file_path> <credentials_file_path>"
+    )
     print("CSV columns: Account ID, Account Name (optional)")
     print("Credentials file (JSON): { \"client_id\": \"...\", \"client_secret\": \"...\" }")
     sys.exit(1)
@@ -54,10 +59,7 @@ for i, row in enumerate(rows, start=1):
             client_secret=client_secret,
         )
 
-        result = account.update_account(
-            id=account_id,
-            credentials=credentials_obj
-        )
+        result = account.update_account(id=account_id, credentials=credentials_obj)
 
         if result:
             print(f"Credentials updated successfully for account: {label}")
@@ -66,12 +68,12 @@ for i, row in enumerate(rows, start=1):
             print(f"Failed to update credentials for account: {label}")
             failed.append(account_id)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - intentional catch-all boundary; logs/wraps and degrades gracefully
         print(f"Error updating credentials for account {label}: {e}")
         failed.append(account_id)
 
     if i < len(rows):
-        print(f"Waiting 30 seconds before processing the next account...")
+        print("Waiting 30 seconds before processing the next account...")
         time.sleep(30)
 
 print("-------------------------------------------------------------------------------")

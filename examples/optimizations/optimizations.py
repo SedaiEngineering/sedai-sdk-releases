@@ -1,10 +1,10 @@
+from datetime import datetime, timedelta, timezone
+
 from sedai import optimizations
-from datetime import datetime
-from datetime import timedelta
 
 # get optimizations by resource id
 resource_id = "resource_id"
-endtime = datetime.utcnow()
+endtime = datetime.now(tz=timezone.utc)
 starttime = endtime - timedelta(weeks=2)
 
 opts = optimizations.get_resource_optimizations(

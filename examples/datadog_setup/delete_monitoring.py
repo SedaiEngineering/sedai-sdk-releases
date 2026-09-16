@@ -1,6 +1,6 @@
-from sedai import monitoring_provider
-
 import sys
+
+from sedai import monitoring_provider
 
 # Collect the following command line arges:
 # Monitoring Provider Id
@@ -17,7 +17,7 @@ api_key = args[1]
 application_key = args[2]
 
 dd_mp = monitoring_provider.delete_monitoring_provider(
-    monitoring_provider_id = monitoring_provider_id
+    monitoring_provider_id=monitoring_provider_id
 )
 
 print(f"Datadog monitoring provider {monitoring_provider_id} deleted successfully")

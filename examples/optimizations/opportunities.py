@@ -1,6 +1,6 @@
-from sedai import optimizations, models
-from typing import List
-from datetime import datetime
+from datetime import datetime, timezone
+
+from sedai import models, optimizations
 
 
 def get_opportunities_for_account(account_id: str):
@@ -9,14 +9,13 @@ def get_opportunities_for_account(account_id: str):
 
 
 def show_cluster_opportunities(
-    cluster_id: str,
-    include_both_workload_and_node: bool = False ,
-    targets: List[str] = None
+    cluster_id: str, include_both_workload_and_node: bool = False, targets: list[str] | None = None
 ):
     cluster_opts = optimizations.get_cluster_opportunities(
-        cluster_id = cluster_id,
+        cluster_id=cluster_id,
         optimization_targets=targets,
-        include_workload_optimization=include_both_workload_and_node)
+        include_workload_optimization=include_both_workload_and_node,
+    )
     if cluster_opts is None:
         print(f"No optimizations for cluster: {cluster_id}")
         return
@@ -26,19 +25,26 @@ def show_cluster_opportunities(
 
     print(f"Opportunities available for cluster: {cluster_opts.resource_name}")
     if work_load_cost_projection is not None:
-        print(f"Cost projections for workload :")
-        print(f"Current average monthly cost: {work_load_cost_projection.currentAverageMonthlyCost}")
-        print(f"Predicted average monthly cost: {work_load_cost_projection.predictedAverageMonthlyCost}")
-        print(f"Predicted average monthly savings: {work_load_cost_projection.predictedAverageMonthlySavings}")
+        print("Cost projections for workload :")
+        print(
+            f"Current average monthly cost: {work_load_cost_projection.currentAverageMonthlyCost}"
+        )
+        print(
+            f"Predicted average monthly cost: {work_load_cost_projection.predictedAverageMonthlyCost}"
+        )
+        print(
+            f"Predicted average monthly savings: {work_load_cost_projection.predictedAverageMonthlySavings}"
+        )
         print("\n")
 
     if node_cost_projection is not None:
-        print(f"Cost projections for Node :")
+        print("Cost projections for Node :")
         print(f"Current average monthly cost: {node_cost_projection.currentAverageMonthlyCost}")
         print(f"Predicted average monthly cost: {node_cost_projection.predictedAverageMonthlyCost}")
-        print(f"Predicted average monthly savings: {node_cost_projection.predictedAverageMonthlySavings}")
+        print(
+            f"Predicted average monthly savings: {node_cost_projection.predictedAverageMonthlySavings}"
+        )
         print("\n")
-
 
     workload_optimizations = cluster_opts.workload_optimizations
     for optimization in workload_optimizations:
@@ -157,18 +163,18 @@ print("Available opportunities:")
 for opt_details in opts['content']:
     cluster_id = opt_details['clusterId']
     include_both_workload_and_node = True
-    targets = ['NODE','WORK_LOAD']
+    targets = ['NODE', 'WORK_LOAD']
     # targets = None
 
     show_cluster_opportunities(
-        cluster_id = cluster_id,
-        include_both_workload_and_node = include_both_workload_and_node,
-        targets = targets
+        cluster_id=cluster_id,
+        include_both_workload_and_node=include_both_workload_and_node,
+        targets=targets,
     )
 
 starttime_str = "09/01/23 00:00:00"
-starttime = datetime.strptime(starttime_str, "%m/%d/%y %H:%M:%S")
-endtime = datetime.now()
+starttime = datetime.strptime(starttime_str, "%m/%d/%y %H:%M:%S").replace(tzinfo=timezone.utc)
+endtime = datetime.now(tz=timezone.utc)
 resource_id = "resource_id"
 
 print("\n\nCompleted Optimizations:")

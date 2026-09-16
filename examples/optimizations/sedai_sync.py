@@ -1,4 +1,4 @@
-from sedai import optimizations, models
+from sedai import models, optimizations
 
 
 def show_recommended_state_kube(resource_id: str):
