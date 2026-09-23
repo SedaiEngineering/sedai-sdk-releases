@@ -740,11 +740,11 @@ console.log(map['sedai-resource-id-1']); // e.g. "/subscriptions/.../virtualMach
 
 #### Transaction-Level Bulk Execution Tracking
 
-> ⚠️ **Available in the test environment only, not yet in production.** This SDK has live-verified
-> `submitBulkExecutionRequest()`, `getExecutionStatus()`, and `getExecutionItems()` end-to-end
-> against the test environment, but the branch has not merged/shipped yet. Use
-> `bulkExecuteWithCopilot()` + `getRecommendations()` above in the meantime, which is fully live
-> today in production.
+> **Availability.** `submitBulkExecutionRequest()`, `getExecutionStatus()` and
+> `getExecutionItems()` are live in production. If a call returns **404 or 405**, your tenant is on
+> a build that predates these endpoints — contact Sedai support to confirm, rather than reading the
+> response as "no executions found". `bulkExecuteWithCopilot()` + `getRecommendations()` remain
+> available and unchanged if you need a path that does not depend on transaction tracking.
 
 `submitBulkExecutionRequest()` submits a batch by Sedai resource ID, cloud provider ID, or both,
 and returns a single transaction ID — poll that one ID instead of tracking your original
