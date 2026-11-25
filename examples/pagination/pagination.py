@@ -25,7 +25,7 @@ for recommendation in recommendations_iterator:
     print(f"Recommended action: {recommendation.action_name}")
     print(f"Recommendation Status: {recommendation.status}")
 
-# Get n-th page
+# Get n-th page. Pages are counted from 1, so start=3 is the third page.
 page_num = 3
 pagination_config = pagination.PaginationConfig(page_size=10, start=page_num, num_pages=1)
 

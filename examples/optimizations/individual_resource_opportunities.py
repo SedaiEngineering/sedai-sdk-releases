@@ -1,4 +1,4 @@
-from sedai.optimizations import AzureDiskConfig, EBSVolumeConfig
+from sedai.optimizations import AzureDiskConfig, EBSVolumeConfig, GCPDiskConfig
 from sedai.optimizations.individual_resource_opportunities import (
     VMOpportunityDetails,
     VolumeOpportunityDetails,
@@ -69,39 +69,54 @@ def show_ebs_volume_config_details(config):
     print(f"Throughput : {ebs_config.throughput}")
 
 
+def show_gcp_disk_config_details(config):
+    gcp_config: GCPDiskConfig = config
+
+    print(f"Disk Type : {gcp_config.disk_type}")
+    print(f"Replication : {gcp_config.replication}")
+    print(f"Size (GB) : {gcp_config.size_gb}")
+    print(f"IOPS : {gcp_config.iops}")
+    print(f"Throughput : {gcp_config.throughput}")
+
+
+def show_volume_config_details(config):
+    # Either side can be missing, for example when only the current configuration is known.
+    if isinstance(config, AzureDiskConfig):
+        show_disk_config_details(config)
+    elif isinstance(config, EBSVolumeConfig):
+        show_ebs_volume_config_details(config)
+    elif isinstance(config, GCPDiskConfig):
+        show_gcp_disk_config_details(config)
+    else:
+        print("No configuration")
+
+
 def show_volume_opportunity_details(opp):
     vol_opp: VolumeOpportunityDetails = opp
 
     show_common_vm_details(vol_opp)
-    if isinstance(vol_opp.current_config, AzureDiskConfig):
-        print("\nCurrent Configuration....")
-        print("-----------------------------")
-        show_disk_config_details(vol_opp.current_config)
+    print("\nCurrent Configuration....")
+    print("-----------------------------")
+    show_volume_config_details(vol_opp.current_config)
 
-        print("\n")
-        print("Recommended Configuration....")
-        print("-----------------------------")
-        show_disk_config_details(vol_opp.recommended_config)
-
-    elif isinstance(vol_opp.current_config, EBSVolumeConfig):
-        print("\nCurrent Configuration....")
-        print("-----------------------------")
-        show_ebs_volume_config_details(vol_opp.current_config)
-
-        print("\n")
-        print("Recommended Configuration....")
-        print("-----------------------------")
-        show_ebs_volume_config_details(vol_opp.recommended_config)
+    print("\n")
+    print("Recommended Configuration....")
+    print("-----------------------------")
+    show_volume_config_details(vol_opp.recommended_config)
 
 
 def print_opportunity_details(opp):
 
-    if isinstance(opp, VMOpportunityDetails):
+    if opp is None:
+        print('No opportunity found for this resource')
+    elif isinstance(opp, VMOpportunityDetails):
         show_vm_opportunity_details(opp)
     elif isinstance(opp, VolumeOpportunityDetails):
         show_volume_opportunity_details(opp)
     else:
-        print('Invalid opportunity details')
+        # Other resource types, such as Kubernetes workloads, storage and databases,
+        # come back with cost and savings only.
+        show_common_vm_details(opp)
 
 
 # Individual resource opportunity
